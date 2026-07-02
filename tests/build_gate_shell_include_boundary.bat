@@ -10,12 +10,22 @@ REM   needs windows\tsf outside the engine tree -> standalone engine repo clone 
 if not exist "%~dp0..\..\..\windows\tsf" ( echo [SKIP] build_gate_shell_include_boundary: windows/tsf/ absent - body-level INTEG gate & exit /b 77 )
 setlocal enabledelayedexpansion
 set "TSF=%~dp0..\..\..\windows\tsf"
+set "SETT=%~dp0..\..\..\windows\settings"
 set /a VIOL=0
-for %%H in (engine-jaso-core.h jaso_strat.h jaso_layout.h jaso_chord.h jaso_xml_loader.h jaso_xml_editor.h vm_strat.h vm_xml.h vm_editor.h v2backend.h shin_p2_strat.h galmadeuli_strat.h fourz_strat.h) do (
+REM   ist2xml.h added 2026-07-03 (M4 shell-embed): shell TUs drive the ist2xml convert core via an
+REM   extern "C" declaration only (i2x_convert_alloc) -- a direct #include of ist2xml.h is a layering
+REM   violation (it transitively pulls jaso_layout.h/jaso_xml_loader.h engine-internal headers).
+REM   windows\settings added 2026-07-03 (adversarial review): SettingsWebView.cpp is a shell TU too
+REM   (compiled into NabiCloud.dll) -- same boundary. tests\ excluded by non-recursive match.
+for %%H in (engine-jaso-core.h jaso_strat.h jaso_layout.h jaso_chord.h jaso_xml_loader.h jaso_xml_editor.h vm_strat.h vm_xml.h vm_editor.h v2backend.h shin_p2_strat.h galmadeuli_strat.h fourz_strat.h ist2xml.h) do (
+  set "HIT="
   findstr /R /C:"#include.*%%H" "%TSF%\*.cpp" "%TSF%\*.h" >nul 2>&1
-  if not errorlevel 1 (
+  if not errorlevel 1 set "HIT=1"
+  findstr /R /C:"#include.*%%H" "%SETT%\*.cpp" >nul 2>&1
+  if not errorlevel 1 set "HIT=1"
+  if defined HIT (
     echo   [VIOLATION] engine-internal header included by shell: %%H
-    findstr /R /N /C:"#include.*%%H" "%TSF%\*.cpp" "%TSF%\*.h"
+    findstr /R /N /C:"#include.*%%H" "%TSF%\*.cpp" "%TSF%\*.h" "%SETT%\*.cpp" 2>nul
     set /a VIOL+=1
   )
 )
