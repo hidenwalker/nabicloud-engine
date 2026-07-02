@@ -29,7 +29,7 @@ libhangul 의 `ENABLE_EXTERNAL_KEYBOARDS` 외부 XML 자판 로더(`hangul/hangu
 
 ## 재배이스(ingest) 상태 — 트랙 T1 / §42 ② (2026-06-26)
 
-순정 상류 추종(de-fork) 트랙. 정본 계획 = **[INGEST_PLAN.md](INGEST_PLAN.md)**.
+순정 상류 추종(de-fork) 트랙. 정본 계획 문서는 본체(private) 레포에서 관리.
 
 - **최신 상류 = `libhangul-0.2.0` = 현 베이스 핀.** master HEAD 는 +5 커밋(cmake/po만, 엔진 변화 0)
   → "최신 ingest" = **버전 범프 아님, 순정 0.2.0 으로의 de-fork**(V2 대체 포크 패치 제거).
@@ -37,7 +37,7 @@ libhangul 의 `ENABLE_EXTERNAL_KEYBOARDS` 외부 XML 자판 로더(`hangul/hangu
   포크 엔진 의존 0** — 순정에서 그대로 동작(전수 평가 `wf_56db3a82-3bc` 확인). 드롭 불필요.
 - **★ingest 코어 제거는 셸 디엔탱글(windows/tsf, 내 레인 밖)에 게이트.** 적대검증 28/28 UNSAFE:
   `.def` 46 export·포크 엔진·디스패치가 전부 NabiCloud.dll(LibhangulBackend 등)에 라이브 링크.
-  V2 경로는 engine-jaso-core/v2backend 를 직접 컴파일 → libhangul export 0 import. 순서 의존 상세 = INGEST_PLAN §1.
+  V2 경로는 engine-jaso-core/v2backend 를 직접 컴파일 → libhangul export 0 import. 순서 의존 상세 = 본체(private) 레포 INGEST_PLAN §1.
 
 ## 상류 대비 차이를 보는 법
 
