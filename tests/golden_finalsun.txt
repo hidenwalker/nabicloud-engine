@@ -1,0 +1,472 @@
+# libhangul 3finalsun golden v1 kbd=3-91-noshift (do not edit by hand)
+## new_ok=1
+## singles
+T s_21
+  k=0x21 p=1 commit=(empty) pre=U+3132
+  flush=U+3132
+T s_22
+  k=0x22 p=1 commit=U+00B7 pre=(empty)
+  flush=(empty)
+T s_23
+  k=0x23 p=1 commit=(empty) pre=U+3148
+  flush=U+3148
+T s_24
+  k=0x24 p=1 commit=(empty) pre=U+313F
+  flush=U+313F
+T s_25
+  k=0x25 p=1 commit=(empty) pre=U+313E
+  flush=U+313E
+T s_26
+  k=0x26 p=1 commit=U+201C pre=(empty)
+  flush=(empty)
+T s_27
+  k=0x27 p=1 commit=(empty) pre=U+314C
+  flush=U+314C
+T s_28
+  k=0x28 p=1 commit=U+0027 pre=(empty)
+  flush=(empty)
+T s_29
+  k=0x29 p=1 commit=U+007E pre=(empty)
+  flush=(empty)
+T s_2A
+  k=0x2A p=1 commit=U+201D pre=(empty)
+  flush=(empty)
+T s_2B
+  k=0x2B p=1 commit=U+002B pre=(empty)
+  flush=(empty)
+T s_2C
+  k=0x2C p=1 commit=U+002C pre=(empty)
+  flush=(empty)
+T s_2D
+  k=0x2D p=1 commit=U+0029 pre=(empty)
+  flush=(empty)
+T s_2E
+  k=0x2E p=1 commit=U+002E pre=(empty)
+  flush=(empty)
+T s_2F
+  k=0x2F p=1 commit=(empty) pre=U+315A
+  flush=U+315A
+T s_30
+  k=0x30 p=1 commit=(empty) pre=U+314B
+  flush=U+314B
+T s_31
+  k=0x31 p=1 commit=(empty) pre=U+314E
+  flush=U+314E
+T s_32
+  k=0x32 p=1 commit=(empty) pre=U+3146
+  flush=U+3146
+T s_33
+  k=0x33 p=1 commit=(empty) pre=U+3142
+  flush=U+3142
+T s_34
+  k=0x34 p=1 commit=(empty) pre=U+315B
+  flush=U+315B
+T s_35
+  k=0x35 p=1 commit=(empty) pre=U+3160
+  flush=U+3160
+T s_36
+  k=0x36 p=1 commit=(empty) pre=U+3151
+  flush=U+3151
+T s_37
+  k=0x37 p=1 commit=(empty) pre=U+3156
+  flush=U+3156
+T s_38
+  k=0x38 p=1 commit=(empty) pre=U+3162
+  flush=U+3162
+T s_39
+  k=0x39 p=1 commit=(empty) pre=U+315F
+  flush=U+315F
+T s_3A
+  k=0x3A p=1 commit=U+0034 pre=(empty)
+  flush=(empty)
+T s_3B
+  k=0x3B p=1 commit=(empty) pre=U+3142
+  flush=U+3142
+T s_3C
+  k=0x3C p=1 commit=U+002C pre=(empty)
+  flush=(empty)
+T s_3D
+  k=0x3D p=1 commit=U+003E pre=(empty)
+  flush=(empty)
+T s_3E
+  k=0x3E p=1 commit=U+002E pre=(empty)
+  flush=(empty)
+T s_3F
+  k=0x3F p=1 commit=U+0021 pre=(empty)
+  flush=(empty)
+T s_40
+  k=0x40 p=1 commit=(empty) pre=U+313A
+  flush=U+313A
+T s_41
+  k=0x41 p=1 commit=(empty) pre=U+3137
+  flush=U+3137
+T s_42
+  k=0x42 p=1 commit=U+003F pre=(empty)
+  flush=(empty)
+T s_43
+  k=0x43 p=1 commit=(empty) pre=U+314B
+  flush=U+314B
+T s_44
+  k=0x44 p=1 commit=(empty) pre=U+313C
+  flush=U+313C
+T s_45
+  k=0x45 p=1 commit=(empty) pre=U+3135
+  flush=U+3135
+T s_46
+  k=0x46 p=1 commit=(empty) pre=U+313B
+  flush=U+313B
+T s_47
+  k=0x47 p=1 commit=(empty) pre=U+3152
+  flush=U+3152
+T s_48
+  k=0x48 p=1 commit=U+0030 pre=(empty)
+  flush=(empty)
+T s_49
+  k=0x49 p=1 commit=U+0037 pre=(empty)
+  flush=(empty)
+T s_4A
+  k=0x4A p=1 commit=U+0031 pre=(empty)
+  flush=(empty)
+T s_4B
+  k=0x4B p=1 commit=U+0032 pre=(empty)
+  flush=(empty)
+T s_4C
+  k=0x4C p=1 commit=U+0033 pre=(empty)
+  flush=(empty)
+T s_4D
+  k=0x4D p=1 commit=U+0022 pre=(empty)
+  flush=(empty)
+T s_4E
+  k=0x4E p=1 commit=U+002D pre=(empty)
+  flush=(empty)
+T s_4F
+  k=0x4F p=1 commit=U+0038 pre=(empty)
+  flush=(empty)
+T s_50
+  k=0x50 p=1 commit=U+0039 pre=(empty)
+  flush=(empty)
+T s_51
+  k=0x51 p=1 commit=(empty) pre=U+314D
+  flush=U+314D
+T s_52
+  k=0x52 p=1 commit=(empty) pre=U+3140
+  flush=U+3140
+T s_53
+  k=0x53 p=1 commit=(empty) pre=U+3136
+  flush=U+3136
+T s_54
+  k=0x54 p=1 commit=(empty) pre=U+313D
+  flush=U+313D
+T s_55
+  k=0x55 p=1 commit=U+0036 pre=(empty)
+  flush=(empty)
+T s_56
+  k=0x56 p=1 commit=(empty) pre=U+3133
+  flush=U+3133
+T s_57
+  k=0x57 p=1 commit=(empty) pre=U+314C
+  flush=U+314C
+T s_58
+  k=0x58 p=1 commit=(empty) pre=U+3144
+  flush=U+3144
+T s_59
+  k=0x59 p=1 commit=U+0035 pre=(empty)
+  flush=(empty)
+T s_5A
+  k=0x5A p=1 commit=(empty) pre=U+314A
+  flush=U+314A
+T s_5B
+  k=0x5B p=1 commit=U+0028 pre=(empty)
+  flush=(empty)
+T s_5C
+  k=0x5C p=1 commit=U+003A pre=(empty)
+  flush=(empty)
+T s_5D
+  k=0x5D p=1 commit=U+003C pre=(empty)
+  flush=(empty)
+T s_5E
+  k=0x5E p=1 commit=U+003D pre=(empty)
+  flush=(empty)
+T s_5F
+  k=0x5F p=1 commit=U+003B pre=(empty)
+  flush=(empty)
+T s_60
+  k=0x60 p=1 commit=U+002A pre=(empty)
+  flush=(empty)
+T s_61
+  k=0x61 p=1 commit=(empty) pre=U+3147
+  flush=U+3147
+T s_62
+  k=0x62 p=1 commit=(empty) pre=U+315C
+  flush=U+315C
+T s_63
+  k=0x63 p=1 commit=(empty) pre=U+3154
+  flush=U+3154
+T s_64
+  k=0x64 p=1 commit=(empty) pre=U+3163
+  flush=U+3163
+T s_65
+  k=0x65 p=1 commit=(empty) pre=U+3155
+  flush=U+3155
+T s_66
+  k=0x66 p=1 commit=(empty) pre=U+314F
+  flush=U+314F
+T s_67
+  k=0x67 p=1 commit=(empty) pre=U+3161
+  flush=U+3161
+T s_68
+  k=0x68 p=1 commit=(empty) pre=U+3134
+  flush=U+3134
+T s_69
+  k=0x69 p=1 commit=(empty) pre=U+3141
+  flush=U+3141
+T s_6A
+  k=0x6A p=1 commit=(empty) pre=U+3147
+  flush=U+3147
+T s_6B
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  flush=U+3131
+T s_6C
+  k=0x6C p=1 commit=(empty) pre=U+3148
+  flush=U+3148
+T s_6D
+  k=0x6D p=1 commit=(empty) pre=U+314E
+  flush=U+314E
+T s_6E
+  k=0x6E p=1 commit=(empty) pre=U+3145
+  flush=U+3145
+T s_6F
+  k=0x6F p=1 commit=(empty) pre=U+314A
+  flush=U+314A
+T s_70
+  k=0x70 p=1 commit=(empty) pre=U+314D
+  flush=U+314D
+T s_71
+  k=0x71 p=1 commit=(empty) pre=U+3145
+  flush=U+3145
+T s_72
+  k=0x72 p=1 commit=(empty) pre=U+3150
+  flush=U+3150
+T s_73
+  k=0x73 p=1 commit=(empty) pre=U+3134
+  flush=U+3134
+T s_74
+  k=0x74 p=1 commit=(empty) pre=U+3153
+  flush=U+3153
+T s_75
+  k=0x75 p=1 commit=(empty) pre=U+3137
+  flush=U+3137
+T s_76
+  k=0x76 p=1 commit=(empty) pre=U+3157
+  flush=U+3157
+T s_77
+  k=0x77 p=1 commit=(empty) pre=U+3139
+  flush=U+3139
+T s_78
+  k=0x78 p=1 commit=(empty) pre=U+3131
+  flush=U+3131
+T s_79
+  k=0x79 p=1 commit=(empty) pre=U+3139
+  flush=U+3139
+T s_7A
+  k=0x7A p=1 commit=(empty) pre=U+3141
+  flush=U+3141
+T s_7B
+  k=0x7B p=1 commit=U+0025 pre=(empty)
+  flush=(empty)
+T s_7C
+  k=0x7C p=1 commit=U+005C pre=(empty)
+  flush=(empty)
+T s_7D
+  k=0x7D p=1 commit=U+002F pre=(empty)
+  flush=(empty)
+T s_7E
+  k=0x7E p=1 commit=U+203B pre=(empty)
+  flush=(empty)
+## plain
+T ga
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  flush=U+AC00
+T gan
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x73 p=1 commit=(empty) pre=U+AC04
+  flush=U+AC04
+T nun
+  k=0x68 p=1 commit=(empty) pre=U+3134
+  k=0x62 p=1 commit=(empty) pre=U+B204
+  k=0x73 p=1 commit=(empty) pre=U+B208
+  flush=U+B208
+T dal
+  k=0x75 p=1 commit=(empty) pre=U+3137
+  k=0x66 p=1 commit=(empty) pre=U+B2E4
+  k=0x77 p=1 commit=(empty) pre=U+B2EC
+  flush=U+B2EC
+## shift_park
+T dak_shift_g
+  k=0x75 p=1 commit=(empty) pre=U+3137
+  k=0x66 p=1 commit=(empty) pre=U+B2E4
+  k=0x5B p=1 commit=(empty) pre=U+B2EE
+  k=0x69 p=1 commit=U+B2EE pre=U+3141
+  flush=U+3141
+T ga_shift_i
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x64 p=1 commit=(empty) pre=U+AC0A
+  flush=U+AC0A
+T ga_shift_f
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x66 p=1 commit=(empty) pre=U+AC0A
+  flush=U+AC0A
+T ga_shift_v
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x76 p=1 commit=(empty) pre=U+AC0A
+  flush=U+AC0A
+## shift_replace
+T gak_shift
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x78 p=1 commit=(empty) pre=U+AC01
+  k=0x5B p=1 commit=(empty) pre=U+AC12
+  flush=U+AC12
+T gan_shift
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x73 p=1 commit=(empty) pre=U+AC04
+  k=0x5B p=1 commit=(empty) pre=U+AC06
+  flush=U+AC06
+T gal_shift
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x77 p=1 commit=(empty) pre=U+AC08
+  k=0x5B p=1 commit=(empty) pre=U+AC19
+  flush=U+AC19
+## shift_then_jong
+T ga_sh_x
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x78 p=1 commit=(empty) pre=U+AC12
+  flush=U+AC12
+T ga_sh_q
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x71 p=1 commit=(empty) pre=U+AC1A
+  flush=U+AC1A
+T ga_sh_a
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x5B p=1 commit=(empty) pre=U+AC0A
+  k=0x61 p=1 commit=(empty) pre=U+AC07
+  flush=U+AC07
+## shift_empty
+T empty_shift
+  k=0x5B p=1 commit=U+0028 pre=(empty)
+  flush=(empty)
+T shift_first
+  k=0x5B p=1 commit=U+0028 pre=(empty)
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  flush=U+AC00
+## cho_double
+T kkf
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x6B p=1 commit=(empty) pre=U+3132
+  k=0x66 p=1 commit=(empty) pre=U+AE4C
+  flush=U+AE4C
+T llf
+  k=0x6C p=1 commit=(empty) pre=U+3148
+  k=0x6C p=1 commit=(empty) pre=U+3149
+  k=0x66 p=1 commit=(empty) pre=U+C9DC
+  flush=U+C9DC
+## vowels
+T gwa
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x76 p=1 commit=(empty) pre=U+ACE0
+  k=0x2F p=1 commit=(empty) pre=U+ACE0
+  k=0x66 p=1 commit=(empty) pre=U+ACE0
+  flush=U+ACE0
+T goe
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x2F p=1 commit=(empty) pre=U+AD34
+  flush=U+AD34
+T gwi
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x39 p=1 commit=(empty) pre=U+ADC0
+  flush=U+ADC0
+## jong_cluster
+T gaks
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x78 p=1 commit=(empty) pre=U+AC01
+  k=0x71 p=1 commit=U+AC01 pre=U+3145
+  flush=U+3145
+T ganj
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x73 p=1 commit=(empty) pre=U+AC04
+  k=0x6C p=1 commit=U+AC04 pre=U+3148
+  flush=U+3148
+## words
+T hangul
+  k=0x6B p=1 commit=(empty) pre=U+3131
+  k=0x66 p=1 commit=(empty) pre=U+AC00
+  k=0x73 p=1 commit=(empty) pre=U+AC04
+  k=0x68 p=1 commit=U+AC04 pre=U+3134
+  k=0x62 p=1 commit=(empty) pre=U+B204
+  k=0x77 p=1 commit=(empty) pre=U+B20C
+  flush=U+B20C
+T digits
+  k=0x30 p=1 commit=(empty) pre=U+314B
+  k=0x31 p=1 commit=(empty) pre=U+110F U+1160 U+11C2
+  k=0x32 p=1 commit=U+110F U+1160 U+11C2 pre=U+3146
+  k=0x33 p=1 commit=U+3146 pre=U+3142
+  k=0x34 p=1 commit=U+3142 pre=U+315B
+  k=0x35 p=1 commit=(empty) pre=U+315B
+  k=0x36 p=1 commit=(empty) pre=U+315B
+  k=0x37 p=1 commit=(empty) pre=U+315B
+  k=0x38 p=1 commit=(empty) pre=U+315B
+  k=0x39 p=1 commit=(empty) pre=U+315B
+  flush=U+315B
+T symbols
+  k=0x21 p=1 commit=(empty) pre=U+3132
+  k=0x40 p=1 commit=U+3132 pre=U+313A
+  k=0x23 p=1 commit=U+313A pre=U+3148
+  k=0x24 p=1 commit=U+3148 pre=U+313F
+  k=0x25 p=1 commit=U+313F pre=U+313E
+  k=0x5E p=1 commit=U+313E U+003D pre=(empty)
+  k=0x26 p=1 commit=U+201C pre=(empty)
+  k=0x2A p=1 commit=U+201D pre=(empty)
+  k=0x28 p=1 commit=U+0027 pre=(empty)
+  k=0x29 p=1 commit=U+007E pre=(empty)
+  flush=(empty)
+## backspace
+T bs_gan
+  built pre=U+AC04
+  bs r=1 pre=U+AC00
+  bs r=1 pre=U+3131
+  bs r=1 pre=(empty)
+T bs_shiftgg
+  built pre=U+3141
+  bs r=1 pre=(empty)
+T bs_gakshift
+  built pre=U+AC12
+  bs r=1 pre=U+AC01
+  bs r=1 pre=U+AC00
+  bs r=1 pre=U+3131
+  bs r=1 pre=(empty)
+## reset
+T rs_1
+  afterreset pre=(empty) empty=1
+  flush=U+B098
+T rs_2
+  afterreset pre=(empty) empty=1
+  flush=U+B098
+# end

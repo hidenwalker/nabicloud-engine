@@ -1,0 +1,38 @@
+# build artifacts of the golden gate (frozen *.txt baselines ARE tracked,
+# transient *.new.txt regenerated outputs are NOT)
+*.exe
+*.obj
+*.log
+*.new.txt
+*.rsp
+_probe*
+# throwaway verification probe scratch (P3 XML-only keyboards, 2026-06-16)
+_pxo_*
+_iso_*
+_enum_*
+# throwaway S2 multikey loader verification scratch (2026-06-16)
+_gen_*
+_pgen_*
+_pext_*
+_kbext/
+_objgen/
+_objpext/
+# throwaway FMT(C)(D) symbol-map/default-options 검증 스크래치 (2026-06-17)
+_kbfmt*/
+_objfmt*/
+_fmt*_build.*
+_fmt*_srcs.txt
+# 318na/3beol 검증 스크래치 + golden 비교 임시본(frozen golden_*.txt 만 추적)
+_kbs3/
+_build_probe_*.bat
+_p318b_srcs.txt
+golden_*_new.txt
+golden_*_old.txt
+# 신세벌 differential 검증 스크래치(3beol 대조 하니스·출력 — 머신별 TEMP 경로 의존)
+_shin_*
+diff_shin.*
+# jaso_sebeol differential 검증 스크래치 + golden 백업/임시 출력 (2026-06-17)
+diff_sebeol.*
+out_*.txt
+*.bak
+golden_all.bak*.txt

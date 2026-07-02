@@ -1,0 +1,59 @@
+NabiCloud libhangul fork — 라이선스/저작권 고지 (NOTICE)
+========================================================
+
+이 디렉토리는 여러 출처를 통합한 libhangul 파생물이다. 각 구성요소의 저작권과
+라이선스는 다음과 같다. 변경 내역은 PATCHES.md, 기준 상류는 UPSTREAM.md 참조.
+
+1) libhangul (코어)
+   - Copyright (C) 2004-2007 Choe Hwanjin
+   - 기여: Joon-cheol Park (AUTHORS)
+   - License: GNU LGPL-2.1-or-later  (전문: COPYING)
+   - https://github.com/libhangul/libhangul
+
+2) gureum 조합 엔진 (순아래 3gs)
+   - Copyright 2011 Jeong YunWon <jeong+gureum@youknowone.org>
+   - 원 배포 라이선스: 2-clause BSD (전문: GUREUM-COPYING)
+   - 본 포크의 LGPL 파일에 병합된 부분은 LGPL-2.1-or-later 로 결합 배포되며,
+     BSD 저작권 고지는 GUREUM-COPYING 절1에 따라 보존한다(BSD는 LGPL과 호환).
+
+3) Windows 적응 (자판 로더·PUA vkeycode 정규화 참고)
+   - 출처: navilera/NavilIME (libhangul 파생)
+   - License: LGPL-2.1-or-later
+
+4) NabiCloud 수정 (2026-)
+   - 한자 사전 파서 하드닝, 3gs 표시 보정, mini XML 자판 로더 등
+   - License: LGPL-2.1-or-later
+   - 한자 사전 데이터(hanja 텍스트)의 원본 데이터 라이선스는 해당 파일 고지를 따른다.
+
+5) 318na 자판 (세벌식 3-18Na) — 엔진서 제거 (순정 재배이스 44dd4b8f, 2026-06-30)
+   - 종전 빌트인 데이터 nabicloud/layouts/layout-318na.{c,h}(navilera/NavilIME 전사,
+     GPL-3.0-or-later)는 f3-r4 순정 코어 스왑에서 제거됨 → 이 libhangul 엔진 트리에
+     더 이상 존재하지 않는다.
+   - 318na 자판은 clean-room 외부 XML(별도 애드온 addons/318na/318na.xml — navilera 의
+     설계 사실만 출처표시하는 본체 귀속 데이터, GPL 아님)로 대체. 이 엔진 트리는 318na
+     데이터·GPL-3.0 성분을 포함하지 않는다.
+
+6) 갈마들이 엔진 + 두벌식 순아래/국규9256 자판 (TYPE_GALMADEULI=1001) — 편입 완료(S4)
+   - 출처: 3beol — yous/libhangul (branch gureum-1.11.1, HEAD bb8fcb3)
+     https://gitlab.com/yous/libhangul
+   - License: GNU LGPL-2.1-or-later (yous/libhangul 상류 COPYING = LGPL v2.1; libhangul 포크라 LGPL-2.1-or-later. GPL 호환)
+   - 엔진 이식: nabicloud/engine/engine-galmadeuli.{c,h}
+     (3beol hangul_ic_process_jamo_dubeol 충실 이식)
+   - 데이터: nabicloud/layouts/layout-2noshift.{c,h}
+     (replace 표·두벌 default_2 조합·국규9256 키맵, 3beol 원본 byte 동일)
+   - ※ 같은 yous/libhangul lineage 의 finalsun(3-91)·신세벌·세모이 엔진/자판도 모두 LGPL-2.1-or-later.
+     ★정정(2026-06-19): 이들은 LGPL-2.1 코어와 **동일 계열**이라 별도 GPL 경계·분리 이슈가 없다
+     (앞선 'GPL 계열' 표기는 오인 — 상류 yous/libhangul COPYING 확인 결과 LGPL v2.1).
+     ★정정(2026-06-30): §5 318na 빌트인(종전 유일 GPL-3.0 성분) 제거로 **이 엔진 트리의
+     GPL-3.0 성분 = 0** 이다 — 전 구성요소 LGPL-2.1-or-later (+ Expat MIT §7).
+
+7) Expat (libexpat) — libhangul 외부 자판 XML 로더(ENABLE_EXTERNAL_KEYBOARDS)용 vendored
+   - Copyright (c) 1998-2000 Thai Open Source Software Center Ltd and Clark Cooper;
+     (c) 2001-2024 Expat maintainers
+   - License: MIT (전문: expat/COPYING · 저자: expat/AUTHORS)
+   - Upstream: https://github.com/libexpat/libexpat (release R_2_6_4)
+   - 위치: expat-upstream/ (상류 libexpat 서브모듈, R_2_6_4 핀) + 손작성 win32/expat_config.h[Windows/MSVC].
+     libhangul.dll 에 정적 컴파일(XML_STATIC). 상세 = expat/README.md.
+
+이 NOTICE 는 LGPL-2.1 §2(b)/§6 고지 의무를 충족하기 위한 것이며, 배포물에 포함한다.
+(Expat 은 MIT — 귀속 고지만 의무.)

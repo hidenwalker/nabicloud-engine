@@ -1,0 +1,35 @@
+; libhangul.dll export 정의 (F-3 R4 option 4 + 3c libhangul-모드 로더 위임)
+; 엔진 DLL 은 libhangul 0.2.0 core + builtin 9 + hanja rb + (ENABLE_EXTERNAL_KEYBOARDS)
+;   순정 expat 외부 XML 로더를 빌드한다. 기본(V2) 경로는 셸 로더(jaso_xml_load)를 쓰고,
+;   libhangul 엔진 모드(use_old_engine=1)에서만 아래 hangul_init + list enum 을 통해 libhangul
+;   자체 로더로 외부 자판을 읽는다(설계 cleanroom/libhangul-mode-runtime-design.md §3·§6).
+LIBRARY libhangul
+EXPORTS
+    hangul_init
+    hangul_fini
+    hangul_ic_backspace
+    hangul_ic_delete
+    hangul_ic_flush
+    hangul_ic_get_commit_string
+    hangul_ic_get_preedit_string
+    hangul_ic_new
+    hangul_ic_process
+    hangul_ic_reset
+    hangul_ic_select_keyboard
+    hangul_ic_set_option
+    hangul_is_choseong
+    hangul_is_cjamo
+    hangul_jamo_to_cjamo
+    hangul_keyboard_list_get_count
+    hangul_keyboard_list_get_keyboard
+    hangul_keyboard_list_get_keyboard_id
+    hangul_keyboard_list_get_keyboard_name
+    hanja_list_delete
+    hanja_list_get_nth_comment
+    hanja_list_get_nth_key
+    hanja_list_get_nth_value
+    hanja_list_get_size
+    hanja_table_delete
+    hanja_table_load
+    hanja_table_match_exact
+    hanja_table_match_prefix

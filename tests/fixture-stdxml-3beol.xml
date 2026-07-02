@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  로더 A part2 런타임 검증용 픽스처 — 순수 표준 libhangul 형식(map/combination, jaso 타입).
+  ★비출하(테스트 전용). ★주석에 셸 판정을 오염시키는 리터럴(v2 엔진 속성 문자열·확장컬럼 태그)을 넣지 말 것 —
+    셸의 문자열 검사(isV2 등)가 주석을 실 속성으로 오인함. V2 확장·navilera 확장컬럼·옛한글 없음(순수 표준) →
+    로더 A 가 흡수 → v2backend 등록 → V2 clean 커널로 라우팅.
+  T.K. UAC 절차: 이 파일을 설치된 (DLL 폴더)\keyboards\ 에 복사 → 새 앱에서 자판 목록에 "표준XML 테스트(3벌)"
+    노출 확인 → 선택 후 아래 입력으로 조합 확인 → 검증 후 파일 삭제(출하 대상 아님).
+      rk 가   rks 간   rrk 까(초성 된소리)   dl 이   djs 언   rka 감
+  (libhangul 미설치 상태에서도 목록 노출·조합 동작 = 애드온화 inversion 정합.)
+-->
+<hangul-keyboard id="teststd3" type="jaso">
+    <name>표준XML 테스트(3벌)</name>
+    <map id="0">
+        <!-- 초성(conjoining 0x1100..0x1112) -->
+        <item key="0x72" value="0x1100"/>   <!-- r → ㄱ -->
+        <item key="0x65" value="0x1103"/>   <!-- e → ㄷ -->
+        <item key="0x64" value="0x110B"/>   <!-- d → ㅇ -->
+        <item key="0x77" value="0x110C"/>   <!-- w → ㅈ -->
+        <!-- 중성(conjoining 0x1161..0x1175) -->
+        <item key="0x6B" value="0x1161"/>   <!-- k → ㅏ -->
+        <item key="0x6A" value="0x1165"/>   <!-- j → ㅓ -->
+        <item key="0x6C" value="0x1175"/>   <!-- l → ㅣ -->
+        <!-- 종성(conjoining 0x11A8..0x11C2) -->
+        <item key="0x73" value="0x11AB"/>   <!-- s → 받침 ㄴ -->
+        <item key="0x61" value="0x11B7"/>   <!-- a → 받침 ㅁ -->
+        <!-- 비-자모(리터럴) -->
+        <item key="0x21" value="0x0021"/>   <!-- ! → 리터럴 -->
+    </map>
+    <combination id="0">
+        <item first="0x1100" second="0x1100" result="0x1101"/>  <!-- ㄱ+ㄱ → ㄲ(된소리) -->
+    </combination>
+</hangul-keyboard>
