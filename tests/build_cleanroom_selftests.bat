@@ -54,6 +54,8 @@ call :build sel_fourz   selftest_jaso_fourz.c %CORE% vm_strat.c vm_layout_4z.c
 call :build sel_vmxml   selftest_jaso_vmxml.c vm_xml.c vm_layout_4z.c
 call :build sel_gongd   selftest_jaso_gongdong.c %CORE% jaso_strat.c jaso_layout_gongdong.c
 call :build sel_gongdx  selftest_jaso_gongdong_xml.c %CORE% jaso_strat.c jaso_layout_gongdong.c jaso_xml_loader.c jamo_compat.c
+REM 슬롯-균일 가상단위(3x 흡수 §54): C 직접 3x 레이아웃 + jaso_xml dump→load 왕복 이중구동(slot/rule-cho/술어/state6).
+call :build sel_3x      selftest_jaso_3x.c %CORE% jaso_strat.c jaso_xml_loader.c jamo_compat.c
 call :build sel_none    selftest_jaso_none.c %CORE% jaso_strat.c jaso_layout_sebeol_final.c jaso_layout_p2.c jaso_layout_galmadeuli.c
 call :build sel_p2      selftest_jaso_p2.c %CORE% jaso_strat.c oracle_shin_p2.c jaso_layout_p2.c
 call :build sel_shinp   selftest_jaso_shinp.c %CORE% jaso_strat.c jaso_layout_shinp.c

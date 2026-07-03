@@ -52,6 +52,7 @@ SELFTEST(selftest_jaso_fourz,          "-",           "sel_fourz — 4z vm_strat
 SELFTEST(selftest_jaso_vmxml,          "-",           "sel_vmxml — vm XML 로더")
 SELFTEST(selftest_jaso_gongdong,       "-",           "sel_gongd — 공동체 자판(미등록·selftest-only)")
 SELFTEST(selftest_jaso_gongdong_xml,   "-",           "sel_gongdx — 공동 XML 왕복 트윈(moa coda 술어 직렬화 잠금, §52)")
+SELFTEST(selftest_jaso_3x,             "-",           "sel_3x — 슬롯-균일 가상단위(3x 흡수 §54): C직접+XML왕복 이중구동")
 SELFTEST(selftest_jaso_none,           "-",           "sel_none — none 전략(3f+P2+galma 혼재)")
 SELFTEST(selftest_jaso_p2,             "3shin-p2",    "sel_p2 — 신세벌 P2 jaso_strat(+동결 오라클)")
 SELFTEST(selftest_jaso_shinp,          "3shin-p",     "sel_shinp — 신세벌 P jaso_strat")

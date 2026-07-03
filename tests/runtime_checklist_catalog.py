@@ -104,6 +104,7 @@ MECHANISM_FIELDS = [
     ("rules",           "조건부-규칙(GD_RULES)",  "SLOT_FILL/CONDITIONAL/L2", "L-3 fire/non-fire 짝 (미배선 주의)"),
     ("shift_require_onset","SHIN_SHIFT M(onset요구)","classify dual","L-2/L-3 (2015↔M 델타)"),
     ("dual_onsetless_combine","dual onsetless-combine(참신D 좌수낱자)","classify dual","L-2/L-3 (X-술어 fire/non-fire 짝 + 빈음절 중성)"),
+    ("onset_combine_while_virtual","state6(가상중성 미해소 중 초성연쇄)","combine/L1","슬롯-균일 3x: 가상 nucleus 유지 중 CHO 결합 짝(치환 vs 경계)"),
     ("yet",             "옛한글(첫가끝 출력)",     "render",       "yet: conjoining + NFC 짝, preedit 확인"),
     ("fill_jong",       "fill-jong(두겹이 단키겹받침)","query",    "Q: 이중모음 우선 vs 겹받침 짝 (미배선 주의)"),
 ]
