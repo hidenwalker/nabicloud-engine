@@ -64,7 +64,7 @@ call :build sel_vunit   selftest_jaso_virtualunit.c %CORE% jaso_strat.c jaso_lay
 call :build sel_yet     selftest_jaso_yet.c %CORE% jaso_strat.c jaso_layout_yetdemo.c jaso_layout_sebeol_final.c jaso_layout_shinp_yet.c jaso_layout_p2yet.c
 call :build sel_multi   selftest_jaso_multiemit.c %CORE%
 call :build sel_chordf  selftest_jaso_chord_family.c %CORE% jaso_strat.c jaso_chord.c jaso_layout_galmadeuli.c jaso_layout_gongdong.c jaso_layout_shin2015.c
-call :build sel_chordlv selftest_jaso_chord_live.c %CORE% jaso_strat.c jaso_chord.c jaso_xml_loader.c jaso_layout_sebeol_final.c jaso_layout_dubeol_std.c jaso_layout_gongdong.c jamo_compat.c
+call :build sel_chordlv selftest_jaso_chord_live.c %CORE% jaso_strat.c jaso_chord.c jaso_xml_loader.c jaso_layout_sebeol_final.c jaso_layout_dubeol_std.c jaso_layout_gongdong.c jaso_layout_3gs.c jamo_compat.c
 call :build sel_3gs     selftest_jaso_3gs.c %CORE% jaso_strat.c jaso_chord.c jaso_layout_3gs.c
 call :build sel_318na   selftest_jaso_318na.c %CORE% jaso_strat.c jaso_layout_318na.c
 call :build sel_rt      selftest_jaso_roundtrip.c %CORE% jaso_strat.c jaso_xml_loader.c jaso_layout_p2.c jaso_layout_shinp.c jaso_layout_shin2012.c jaso_layout_shin2015.c jaso_layout_shinm.c jaso_layout_shinp_yet.c jaso_layout_p2yet.c jaso_layout_318na.c jamo_compat.c
