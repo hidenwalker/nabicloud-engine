@@ -67,6 +67,8 @@ REM ★게이트 분류 (2026-07-02, 3REPO openDecision #5 / DECISIONS §49; 202
 REM   CORE = build_and_verify_all (엔진 트리 자기완결 — 공개 nabicloud-engine 단독 클론서 실행 가능).
 REM   INTEGRATION = 나머지 12(루프) + WU9(JS) = 13 (본체-레벨: cleanroom/ · windows/ · shared\data\keyboards
 REM     픽스처 필요) — 각 .bat 상단 가드가 fixture 부재 시 exit 77 graceful-SKIP(아래 [SKIP] 표시, FAIL 아님).
+REM     E14 spellcheck gates(run_spellcheck_gates.bat, 7 selftest)도 별도 INTEG 블록으로 배선
+REM     (windows\tsf\tests fixture 부재 시 SKIP; 실 회귀 잠금을 마스터 게이트에 편입, 2026-07-07 25번).
 REM     WU9 는 별도 블록(node 스크립트라 exit 77 관례 아님)이나 windows\settings\tests fixture 부재 시
 REM     동일하게 SKIP 처리(아래 :run_wu9 앞 가드). 본체 superproject(전 서브모듈 마운트)에선 전량 실행.
 REM     SKIP 코드 77 = cl.exe exit 2 와 충돌 방지.
@@ -93,6 +95,15 @@ if not exist "%WU9DIR%\sync-core.js" (
     call :run_wu9
   )
 )
+REM E14 spellcheck gates [INTEG] -- built from windows/tsf/tests (superproject only;
+REM   absent in the public nabicloud-engine standalone clone -> graceful SKIP).
+echo == E14 spellcheck gates (INTEG) ==
+set "SPDIR=%HERE%..\..\..\windows\tsf\tests"
+if not exist "%SPDIR%\run_spellcheck_gates.bat" (
+  echo   [SKIP] spellcheck gates  ^(INTEG fixture absent - run from superproject^)
+) else (
+  call :run_spellcheck
+)
 echo ----------------------------------------------------------------------
 if %FAILS%==0 ( echo ALL_GATES_PASS & exit /b 0 ) else ( echo GATES_FAIL: %FAILS% & exit /b %FAILS% )
 goto :eof
@@ -116,4 +127,17 @@ if errorlevel 1 (
 )
 echo   [PASS] WU9 editor-core JS tests
 popd
+exit /b 0
+
+:run_spellcheck
+REM Aggregates the 7 TSF spellcheck selftests (grammar_rule/grammar_facts/boundary_classify/
+REM   confusion_dict/grammar_seed_integration/correct_suggest/correct_suggest_policy). Own exit
+REM   0/1; INTEG-wired here.
+call "%SPDIR%\run_spellcheck_gates.bat" >nul 2>&1
+if errorlevel 1 (
+  echo   [FAIL] spellcheck gates ^(re-run windows\tsf\tests\run_spellcheck_gates.bat for detail^)
+  set /a FAILS+=1
+  exit /b 0
+)
+echo   [PASS] spellcheck gates
 exit /b 0
