@@ -388,35 +388,177 @@
     {
       "gate_id": "engine.v2backend_importzero",
       "subsystem": "engine-core",
-      "description": "Import-0 mechanical gate (C3/module split Step 2): msbuild sandeulbaram.vcxproj Release x64, then a libhangul-free consumer link+run (38/38 selftest), then dumpbin /imports + /symbols assert zero libhangul dependency. Multi-stage msbuild+dumpbin recipe the current product_artifact_check schema (single artifact_ref+check) cannot express -- registered honestly as legacy_bat pending a dedicated schema design pass (T4 follow-up, flagged not silently forced).",
-      "kind": "legacy_bat",
+      "description": "Import-0 mechanical gate (C3/module split Step 2): msbuild sandeulbaram.vcxproj Release x64, bind the produced static lib, link a libhangul-free consumer exe against it, run its self-test, then dumpbin /imports + /symbols assert zero libhangul dependency. T4 must_fix 2 formalization (Codex Sol design GO + Fable5 GO_WITH_FIXES, all 6 must_fix folded into $defs/product + the msvc adapter) of the prior legacy_bat registration -- see tests/build_v2backend_importzero.bat for the untouched original recipe this pipeline reproduces stage-for-stage.",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
-      "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_v2backend_importzero.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "product_artifact_check_schema_design_tbd"
+      "requirements": [
+        "compiler.cxx17",
+        "tool.msbuild",
+        "tool.dumpbin"
+      ],
+      "arch": "x64",
+      "product": {
+        "preconditions": [
+          {"path_exists": "cleanroom", "reason": "body-level INTEG gate: cleanroom/ absent in a standalone engine-repo clone"}
+        ],
+        "stages": [
+          {
+            "id": "build_sandeulbaram",
+            "kind": "msbuild",
+            "project_ref": "cleanroom/impl/sandeulbaram.vcxproj",
+            "configuration": "Release",
+            "platform": "x64"
+          },
+          {
+            "id": "bind_sand_lib",
+            "kind": "bind_artifact",
+            "artifact_id": "sand_lib",
+            "ref": {"repo_path": "cleanroom/impl/x64/Release/sandeulbaram.lib"}
+          },
+          {
+            "id": "build_consumer",
+            "kind": "cxx_build",
+            "build": {
+              "profile": "portable-cxx17",
+              "sources": ["cleanroom/impl/promote-shinp2/v2backend_test.cpp"],
+              "includes": ["cleanroom/impl/promote-shinp2", "cleanroom/include", "cleanroom/impl/clean/canonical"],
+              "extra_flags": ["/W4", "/MT"]
+            },
+            "link_inputs": [{"artifact": "sand_lib"}],
+            "output_artifact_id": "consumer_exe"
+          },
+          {
+            "id": "run_consumer",
+            "kind": "run",
+            "executable": {"artifact": "consumer_exe"},
+            "expected": {"exit_code": 0, "token_kind": "EXIT_ONLY"}
+          },
+          {
+            "id": "dumpbin_imports_consumer",
+            "kind": "dumpbin",
+            "target": {"artifact": "consumer_exe"},
+            "dumpbin_mode": "imports",
+            "assertions": [
+              {"kind": "absent_line_with_all", "required_substrings": ["libhangul"], "match_case": false}
+            ]
+          },
+          {
+            "id": "dumpbin_symbols_sandlib",
+            "kind": "dumpbin",
+            "target": {"artifact": "sand_lib"},
+            "dumpbin_mode": "symbols",
+            "assertions": [
+              {"kind": "absent_line_with_all", "required_substrings": ["UNDEF", "hangul_"], "match_case": true},
+              {"kind": "absent_line_with_all", "required_substrings": ["UNDEF", "hic_"], "match_case": true}
+            ]
+          }
+        ]
       }
     },
     {
       "gate_id": "engine.gate_standalone_runtime",
       "subsystem": "engine-core",
-      "description": "Phase 3.5 runtime proof: msbuild the full NabiCloud.sln x64 Release, copies NabiCloud.dll + clean base Hanja dictionary to an isolated temp dir with no libhangul.dll sibling, then proves LoadLibraryExW + HanjaDict run standalone. Same multi-stage msbuild+dumpbin+probe-exe recipe as v2backend_importzero -- same schema-design deferral.",
-      "kind": "legacy_bat",
+      "description": "Phase 3.5 runtime proof: msbuild the full NabiCloud.sln x64 Release via the CP949-safe windows/build_sln.cmd wrapper (AGENTS.md: no ad-hoc sln msbuild), stage NabiCloud.dll + the clean base Hanja dictionary into an isolated workspace with no libhangul.dll sibling, then prove LoadLibraryExW + a standalone HanjaDict run both succeed. T4 must_fix 2 formalization -- see engine.v2backend_importzero for the schema/adapter design note, and tests/build_gate_standalone_runtime.bat for the untouched original recipe this pipeline reproduces stage-for-stage.",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
-      "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_gate_standalone_runtime.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "product_artifact_check_schema_design_tbd"
+      "requirements": [
+        "compiler.cxx17",
+        "tool.msbuild",
+        "tool.dumpbin"
+      ],
+      "arch": "x64",
+      "product": {
+        "preconditions": [
+          {"path_exists": "cleanroom", "reason": "body-level INTEG gate: cleanroom/ absent in a standalone engine-repo clone"},
+          {"path_exists": "windows/tsf", "reason": "body-level INTEG gate: windows/tsf/ absent in a standalone engine-repo clone"}
+        ],
+        "stages": [
+          {
+            "id": "build_sln",
+            "kind": "msbuild",
+            "project_ref": "windows/NabiCloud.sln",
+            "configuration": "Release",
+            "platform": "x64"
+          },
+          {
+            "id": "bind_dll",
+            "kind": "bind_artifact",
+            "artifact_id": "nabicloud_dll",
+            "ref": {"repo_path": "windows/tsf/x64/Release/NabiCloud.dll"}
+          },
+          {
+            "id": "stage_payload",
+            "kind": "stage_files",
+            "files": [
+              {"from": {"artifact": "nabicloud_dll"}, "workspace_path": "NabiCloud.dll"},
+              {"from": {"repo_path": "shared/data/dictionary/10-hanja-wiki.txt"}, "workspace_path": "dictionary/10-hanja-wiki.txt"},
+              {"from": {"repo_path": "shared/data/dictionary/40-mssymbol-msime.txt"}, "workspace_path": "dictionary/40-mssymbol-msime.txt"},
+              {"from": {"repo_path": "shared/data/dictionary/hanja_meta.tsv"}, "workspace_path": "dictionary/hanja_meta.tsv"},
+              {"from": {"repo_path": "shared/data/dictionary/90-user.txt.template"}, "workspace_path": "dictionary/90-user.txt.template"}
+            ]
+          },
+          {
+            "id": "build_load_probe",
+            "kind": "cxx_build",
+            "build": {
+              "profile": "portable-cxx17",
+              "sources": ["shared/engine/tests/standalone_load_probe.cpp"],
+              "extra_flags": ["/W4", "/MT"]
+            },
+            "output_artifact_id": "load_probe_exe"
+          },
+          {
+            "id": "path_check_no_libhangul_dll",
+            "kind": "path_check",
+            "target": {"workspace": "libhangul.dll"},
+            "expect": "absent"
+          },
+          {
+            "id": "run_load_probe",
+            "kind": "run",
+            "executable": {"artifact": "load_probe_exe"},
+            "arguments": [{"workspace": "NabiCloud.dll"}],
+            "expected": {"exit_code": 0, "token_kind": "EXIT_ONLY"}
+          },
+          {
+            "id": "build_hanja_probe",
+            "kind": "cxx_build",
+            "build": {
+              "profile": "portable-cxx17",
+              "sources": [
+                "shared/engine/tests/standalone_hanja_probe.cpp",
+                "windows/tsf/HanjaDict.cpp",
+                "windows/tsf/HanjaLearn.cpp",
+                "cleanroom/impl/clean/canonical/baram_hanja.c"
+              ],
+              "includes": ["windows/tsf", "cleanroom/include"],
+              "extra_flags": ["/W4", "/MT", "/wd4996"]
+            },
+            "output_artifact_id": "hanja_probe_exe"
+          },
+          {
+            "id": "dumpbin_imports_hanja_probe",
+            "kind": "dumpbin",
+            "target": {"artifact": "hanja_probe_exe"},
+            "dumpbin_mode": "imports",
+            "assertions": [
+              {"kind": "absent_line_with_all", "required_substrings": ["libhangul"], "match_case": false}
+            ]
+          },
+          {
+            "id": "run_hanja_probe",
+            "kind": "run",
+            "executable": {"artifact": "hanja_probe_exe"},
+            "arguments": [{"workspace": "dictionary"}],
+            "expected": {"exit_code": 0, "token_kind": "EXIT_ONLY"}
+          }
+        ]
       }
     }
   ]
