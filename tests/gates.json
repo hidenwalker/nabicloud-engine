@@ -122,15 +122,15 @@
       },
       {
         "path": "tests/run_all_gates.bat",
-        "reason": "T3/T4-era master aggregator that calls the loop GATES + WU9(JS) + E14(spellcheck, T3 absorbed) -- superseded by the raindrop_testsys driver for suite execution but kept runnable until T6 retires the 3 legacy aggregators",
+        "reason": "T6 (59th session): retired to a thin wrapper delegating to `python -m raindrop_testsys run --suite all --tolerate-manual-evidence` (the single root driver); WU9 (JS, no manifest shard yet) stays as an inline check. Kept at this path/name for existing callers (publish-release.yml CI release gate).",
         "role": "legacy_pending",
-        "retire_stage": "T6"
+        "owner": "raindrop_testsys run --suite all"
       },
       {
         "path": "tests/build_cleanroom_selftests.bat",
-        "reason": "43-selftest aggregator whose real sources live in cleanroom/impl/clean/canonical/ (a different physical component) -- decomposed into the separate cleanroom/impl/clean/canonical shard's 43 leaf gates, not registered here",
+        "reason": "T6 (59th session): retired to a thin wrapper delegating to `python -m raindrop_testsys run --suite cleanroom`. Its 46 sel_* selftests (real sources in cleanroom/impl/clean/canonical/, a different physical component) are the separate cleanroom/impl/clean/canonical shard's leaf gates (T4), which jaso_catalog.py (T5) also reads directly for its own source-list data -- this .bat's body is no longer load-bearing for anything but its own direct-invocation callers.",
         "role": "legacy_pending",
-        "owner": "cleanroom/impl/clean/canonical shard"
+        "owner": "cleanroom/impl/clean/canonical shard + raindrop_testsys run --suite cleanroom"
       },
       {
         "path": "tests/gate_pristine_imports.bat",

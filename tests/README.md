@@ -10,21 +10,27 @@ tests\run_all_gates.bat      REM ★전 게이트 일괄(아래 인벤토리 전
 tests\build_and_verify.bat   REM 단일 게이트(3gs 기본 골든)
 ```
 
-## 런타임 체크리스트 (반)자동화 — `runtime_checklist_catalog.py` (빌드 0·정적)
+## 런타임 체크리스트 (반)자동화 — jaso 카탈로그 (빌드 0·정적)
 
 변경셋에서 **실측-런타임이 필요한 자판/기제만** 추려 [RUNTIME_TEST_CHECKLIST.md](../../../docs/RUNTIME_TEST_CHECKLIST.md)
 라운드를 (반)자동 조립하는 1단계 정적 도구. 정본 설계 = [docs/TEST_CHECKLIST_AUTOMATION_DESIGN.md](../../../docs/TEST_CHECKLIST_AUTOMATION_DESIGN.md) §11.
 게이트를 **건드리지 않는다**(순수 additive, run_all_gates 무관). 데이터는 전부 라이브 소스 도출(드리프트 없음).
 
+★**T5(59번, 2026-07-23) 흡수**: 실제 구현은 `raindrop_testsys/jaso_catalog.py`(공용 테스트 패키지)로
+이동했다 — **정본은 거기, 아래 `runtime_checklist_catalog.py` 는 기존 호출부(`build_drift_check.bat`·
+gates.json `engine.drift_check`) 하위호환용 위임 shim**(출력/exit code byte-동치 검증됨). 새 사용은
+아래 두 방식 어느 쪽이든 동일:
+
 ```
-python runtime_checklist_catalog.py select <변경파일..>   REM 변경→영향 자판(표시명)·기제·라운드·게이트앵커 (없으면 git diff)
-python runtime_checklist_catalog.py catalog               REM 레이아웃×기제 매트릭스 + id-registry(UNION) 덤프
-python runtime_checklist_catalog.py census                REM selftest ∩ 빌드 manifest 감사 (CENSUS-OK/FAIL)
-python runtime_checklist_catalog.py check                 REM 드리프트 게이트: known-dropped sync + 기제필드 분류 (DRIFT-CHECK-OK/FAIL)
-python runtime_checklist_catalog.py collect               REM 2단계: 계측 selftest -DEMIT_JSON 빌드+실행→방출 파싱→한글 디코드
-python runtime_checklist_catalog.py verify                REM 2단계 검증패스: RUNTIME_TEST_CHECKLIST 수기 행 ↔ 엔진 방출 대조(엔진확인/미대조)
-python runtime_checklist_catalog.py pairs                 REM 대칭짝 자동조립: 방출 실측서 backspace짝(X↔X⌫)·fire/non-fire짝 검출(§1)
+python -m raindrop_testsys select <변경파일..> --root <repo>   REM 정본 진입점(단일 driver 와 동일 --root 관례)
+python runtime_checklist_catalog.py select <변경파일..>         REM 이 디렉터리에서 그대로(shim, 동일 출력)
 ```
+
+커맨드 7종(둘 다 동일하게 지원): `select`(변경→영향 자판·기제·라운드·게이트앵커, 없으면 git diff) ·
+`catalog`(레이아웃×기제 매트릭스+id-registry UNION 덤프) · `census`(selftest∩빌드manifest 감사) ·
+`check`(드리프트 게이트: known-dropped sync+기제필드 분류) · `collect`(2단계: 계측 selftest -DEMIT_JSON
+빌드+실행→방출 파싱→한글 디코드) · `verify`(2단계 검증패스: RUNTIME_TEST_CHECKLIST 수기 행 ↔ 엔진 방출 대조) ·
+`pairs`(대칭짝 자동조립: backspace짝·fire/non-fire짝 검출, §1).
 
 ★새 자판(외부 XML·빌트인 레이아웃·NSI 본체 승격)은 **도구 무수정 자동 반영**(glob+정규식). 유일한 수기
 터치포인트 = 신규 *기제*(jaso_layout 새 필드) — `check` 의 M3b 드리프트가 미분류를 fail 로 강제(조용한 누락 방지).
