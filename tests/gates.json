@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "component": "shared/engine",
+  "inventory": {
+    "roots": [
+      "tests"
+    ],
+    "test_patterns": [
+      "*.c",
+      "*.cpp"
+    ],
+    "excluded": [
+      {
+        "path": "tests/_oracle_2y3y_probe.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/_oracle_xdiff.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/diff_semoe.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/diff_shin_xml.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/dubeol_jong_selftest.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/dubeol_xml_verify.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/editor_e2e_verify.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/editor_jsc_dump.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/editor_roundtrip_verify.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/golden.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/golden_318na.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/golden_finalsun.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/golden_galmadeuli.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/golden_off.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/semoe_xml_verify.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/shin_xml_verify.c",
+        "reason": "retired gate source (run_all_gates.bat history comments document the retirement -- de-fork/V2-migration/engine-layer-drop superseded these; kept as dead archive, not built)",
+        "role": "archive"
+      },
+      {
+        "path": "tests/dump_builtin_keymaps.c",
+        "reason": "dev-only regen tool for windows/tsf/nabicloud_builtin_keymaps.h (invoked manually via dump_builtin_keymaps.bat when the builtin keymap header needs refreshing) -- not a gate itself",
+        "role": "dev_tool",
+        "owner": "tests/dump_builtin_keymaps.bat"
+      },
+      {
+        "path": "tests/editor_jsc_dump_v2.cpp",
+        "reason": "built by tests/build_editor_jsc_diff_v2.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
+        "role": "legacy_pending",
+        "owner": "tests/build_editor_jsc_diff_v2.bat"
+      },
+      {
+        "path": "tests/gate_editor_preview_equiv.c",
+        "reason": "built by tests/build_gate_editor_preview_equiv.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
+        "role": "legacy_pending",
+        "owner": "tests/build_gate_editor_preview_equiv.bat"
+      },
+      {
+        "path": "tests/standalone_hanja_probe.cpp",
+        "reason": "built by tests/build_gate_standalone_runtime.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
+        "role": "legacy_pending",
+        "owner": "tests/build_gate_standalone_runtime.bat"
+      },
+      {
+        "path": "tests/standalone_load_probe.cpp",
+        "reason": "built by tests/build_gate_standalone_runtime.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
+        "role": "legacy_pending",
+        "owner": "tests/build_gate_standalone_runtime.bat"
+      },
+      {
+        "path": "tests/run_all_gates.bat",
+        "reason": "T3/T4-era master aggregator that calls the loop GATES + WU9(JS) + E14(spellcheck, T3 absorbed) -- superseded by the raindrop_testsys driver for suite execution but kept runnable until T6 retires the 3 legacy aggregators",
+        "role": "legacy_pending",
+        "retire_stage": "T6"
+      },
+      {
+        "path": "tests/build_cleanroom_selftests.bat",
+        "reason": "43-selftest aggregator whose real sources live in cleanroom/impl/clean/canonical/ (a different physical component) -- decomposed into the separate cleanroom/impl/clean/canonical shard's 43 leaf gates, not registered here",
+        "role": "legacy_pending",
+        "owner": "cleanroom/impl/clean/canonical shard"
+      },
+      {
+        "path": "tests/gate_pristine_imports.bat",
+        "reason": "R4 rearm pending (Codex B-spike GO for B' load_dir removal, cleanroom/f3-r2-loaddir-bspike-codex-verdict.md) -- not currently wired into run_all_gates.bat, dormant until R4 executes",
+        "role": "orphan_pending",
+        "retire_stage": "R4_rearm"
+      }
+    ]
+  },
+  "gates": [
+    {
+      "gate_id": "engine.golden_all",
+      "subsystem": "engine-core",
+      "description": "W0 all-keyboards characterization gate (CORE, standalone engine-repo clone works): builds tests/golden_all.c against hangul/*.c (except hanja.c), runs over every registered builtin keyboard x option axis, byte-diffs stdout against the frozen tests/golden_all.txt oracle. Cross-engine equivalence baseline.",
+      "kind": "golden_diff",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [
+        "compiler.cxx17"
+      ],
+      "arch": "any",
+      "build": {
+        "profile": "portable-cxx17",
+        "sources": [
+          "tests/golden_all.c",
+          "hangul/hangulctype.c",
+          "hangul/hangulinputcontext.c",
+          "hangul/hangulkeyboard.c"
+        ],
+        "includes": [
+          "hangul"
+        ]
+      },
+      "run": {
+        "cwd": ".",
+        "timeout_class": "medium",
+        "expected": {
+          "exit_code": 0,
+          "token_kind": "EXIT_ONLY"
+        }
+      },
+      "golden": {
+        "golden_path": "tests/golden_all.txt",
+        "produced": "stdout"
+      }
+    },
+    {
+      "gate_id": "engine.drift_check",
+      "subsystem": "testsys",
+      "description": "Static drift gate (build 0): runtime_checklist_catalog.py check (roster<->manifest cross-check) + census (canonical selftest*.c intersect build manifest). python absent = skip. (Scope overlaps T5 -- T5 absorbs the underlying catalog logic into raindrop_testsys; this registers the CURRENT script as-is.)",
+      "kind": "script_test",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "run": {
+        "cwd": ".",
+        "arguments": [
+          "tests/runtime_checklist_catalog.py",
+          "check"
+        ],
+        "timeout_class": "medium",
+        "expected": {
+          "exit_code": 0,
+          "token_kind": "EXIT_ONLY"
+        }
+      }
+    },
+    {
+      "gate_id": "engine.gate_shell_keymap_equiv",
+      "subsystem": "shell-boundary",
+      "description": "F-3 R2-2 gate: assert the committed windows/tsf/nabicloud_builtin_keymaps.h still byte-equals the engine's hangul_keyboard_map_to_char. Builtin-only (ENABLE_EXTERNAL_KEYBOARDS unset).",
+      "kind": "cxx_test",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [
+        "compiler.cxx17"
+      ],
+      "arch": "any",
+      "build": {
+        "profile": "portable-cxx17",
+        "sources": [
+          "tests/gate_shell_keymap_equiv.c",
+          "hangul/hangulctype.c",
+          "hangul/hangulinputcontext.c",
+          "hangul/hangulkeyboard.c"
+        ],
+        "includes": [
+          "hangul",
+          "../../windows/tsf"
+        ]
+      },
+      "run": {
+        "cwd": ".",
+        "arguments": [
+          "../data/keyboards"
+        ],
+        "timeout_class": "short",
+        "expected": {
+          "exit_code": 0,
+          "token_kind": "LEGACY_TOKEN",
+          "token_text": "GATE_SHELL_KEYMAP_EQUIV_PASS"
+        }
+      }
+    },
+    {
+      "gate_id": "engine.gate_shell_include_boundary",
+      "subsystem": "shell-boundary",
+      "description": "Shell-to-engine include boundary gate (2026-07-02 arch review): production shell TUs (windows/tsf top-level, windows/settings) must consume the Sandeulbaram engine only through the public surface (cleanroom/include) + embedded builtin XML data headers -- a direct #include of any engine-internal header is a layering violation. Baseline = 0 violations.",
+      "kind": "source_rule",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "rule": {
+        "clauses": [
+          {
+            "mode": "forbid_substrings",
+            "targets": [
+              "../../windows/tsf/*.cpp",
+              "../../windows/tsf/*.h",
+              "../../windows/settings/*.cpp"
+            ],
+            "patterns": [
+              "engine-jaso-core.h",
+              "jaso_strat.h",
+              "jaso_layout.h",
+              "jaso_chord.h",
+              "jaso_xml_loader.h",
+              "jaso_xml_editor.h",
+              "vm_strat.h",
+              "vm_xml.h",
+              "vm_editor.h",
+              "v2backend.h",
+              "shin_p2_strat.h",
+              "galmadeuli_strat.h",
+              "fourz_strat.h",
+              "ist2xml.h"
+            ],
+            "ignore_c_comments": true
+          }
+        ]
+      }
+    },
+    {
+      "gate_id": "engine.jaso_editor_verify",
+      "subsystem": "editor-bridge",
+      "description": "V2 keyboard-editor bridge cross-verify gate (thin wrapper) -- invokes cleanroom/impl/clean/canonical/build_jaso_editor_verify.cmd internally (editor bridge sources live in cleanroom/, not shared/engine). Registered against the shared/engine wrapper .bat itself (what run_all_gates.bat actually calls), not the cleanroom .cmd directly.",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_jaso_editor_verify.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "cleanroom_cmd_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.vm_editor_verify",
+      "subsystem": "editor-bridge",
+      "description": "VM (register-machine / 4z) keyboard-editor bridge cross-verify gate (thin wrapper) -- invokes cleanroom/impl/clean/canonical/build_vm_editor_verify.cmd internally.",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_vm_editor_verify.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "cleanroom_cmd_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.abbrev_chord_v2_verify",
+      "subsystem": "editor-bridge",
+      "description": "Master-gate wrapper for the Semoe UnitMix abbrev chord-fold V2-path equivalence selftest (Y2/G7) -- invokes windows/tsf/tests/build_abbrev_chord_v2_selftest.bat internally (T3 shard excluded that selftest as owned-by-T4).",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_abbrev_chord_v2_verify.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "windows_tsf_shard_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.dubeol_abbrev_verify",
+      "subsystem": "editor-bridge",
+      "description": "Master-gate wrapper for the Dubeol (dugyeobe/dujul-e) abbreviation trigger engine (DubeolAbbrev) selftest -- invokes windows/tsf/tests/build_dubeol_abbrev_selftest.bat internally (T3 shard excluded that selftest as owned-by-T4).",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_dubeol_abbrev_verify.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "windows_tsf_shard_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.gate_editor_preview_equiv",
+      "subsystem": "editor-bridge",
+      "description": "F-3 R4 gate: proves the legacy standard-XML editor preview fallback is gone (3-89/3sun-1990 must be V2 XML) -- composite: builds+runs gate_editor_preview_equiv.c THEN chains a call to build_jaso_editor_verify.bat for V2 preview composition coverage. Multi-step composite, not a single cxx_test.",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_gate_editor_preview_equiv.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "composite_multistage_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.editor_jsc_diff_v2",
+      "subsystem": "editor-bridge",
+      "description": "JS<->C serializer differential gate (V2 edition): 2-stage native build (C kernel objects + C++ editor bridge exe) dumps each builtin keyboard's canonical serialization, then node jsc-diff-v2.js checks the JS core reproduces those bytes exactly. Hybrid native+node, not expressible as a single cxx_test.",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_editor_jsc_diff_v2.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "composite_multistage_native_port_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.v2backend_importzero",
+      "subsystem": "engine-core",
+      "description": "Import-0 mechanical gate (C3/module split Step 2): msbuild sandeulbaram.vcxproj Release x64, then a libhangul-free consumer link+run (38/38 selftest), then dumpbin /imports + /symbols assert zero libhangul dependency. Multi-stage msbuild+dumpbin recipe the current product_artifact_check schema (single artifact_ref+check) cannot express -- registered honestly as legacy_bat pending a dedicated schema design pass (T4 follow-up, flagged not silently forced).",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_v2backend_importzero.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "product_artifact_check_schema_design_tbd"
+      }
+    },
+    {
+      "gate_id": "engine.gate_standalone_runtime",
+      "subsystem": "engine-core",
+      "description": "Phase 3.5 runtime proof: msbuild the full NabiCloud.sln x64 Release, copies NabiCloud.dll + clean base Hanja dictionary to an isolated temp dir with no libhangul.dll sibling, then proves LoadLibraryExW + HanjaDict run standalone. Same multi-stage msbuild+dumpbin+probe-exe recipe as v2backend_importzero -- same schema-design deferral.",
+      "kind": "legacy_bat",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "legacy": {
+        "bat_path": "tests/build_gate_standalone_runtime.bat",
+        "owner": "shared/engine/tests/run_all_gates.bat",
+        "retire_stage": "product_artifact_check_schema_design_tbd"
+      }
+    }
+  ]
+}
