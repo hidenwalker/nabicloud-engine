@@ -79,6 +79,7 @@
     <LinkIncremental>true</LinkIncremental>  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <!-- vendored libhangul 의 size_t->int 등 숫자 변환 경고 침묵(소스 무수정, 빌드 설정만 — 무수정 원칙 보존). -->
       <DisableSpecificWarnings>4267;4244;4018;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -93,6 +94,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <!-- vendored libhangul 의 size_t->int 등 숫자 변환 경고 침묵(소스 무수정, 빌드 설정만 — 무수정 원칙 보존). -->
       <DisableSpecificWarnings>4267;4244;4018;%(DisableSpecificWarnings)</DisableSpecificWarnings>
