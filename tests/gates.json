@@ -180,6 +180,33 @@
       }
     },
     {
+      "gate_id": "engine.pristine9_anchor",
+      "subsystem": "engine-core",
+      "description": "W8e-1 seal anchor: deterministically extracts the pristine nine builtin keyboards from golden_all.txt and byte-compares them with the independent pristine9 anchor.",
+      "kind": "script_test",
+      "suites": [
+        "engine",
+        "all"
+      ],
+      "requirements": [],
+      "arch": "any",
+      "run": {
+        "cwd": ".",
+        "arguments": [
+          "tests/golden_pristine9_anchor.py",
+          "verify",
+          "tests/golden_all.txt",
+          "tests/golden_pristine9.anchor"
+        ],
+        "timeout_class": "short",
+        "expected": {
+          "exit_code": 0,
+          "token_kind": "LEGACY_TOKEN",
+          "token_text": "PRISTINE9_ANCHOR_OK"
+        }
+      }
+    },
+    {
       "gate_id": "engine.drift_check",
       "subsystem": "testsys",
       "description": "Static drift gate (build 0): runtime_checklist_catalog.py check (roster<->manifest cross-check) + census (canonical selftest*.c intersect build manifest). python absent = skip. (Scope overlaps T5 -- T5 absorbs the underlying catalog logic into raindrop_testsys; this registers the CURRENT script as-is.)",
