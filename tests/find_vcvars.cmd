@@ -10,10 +10,20 @@ if "%~1"=="" (set "_VA=64") else (set "_VA=%~1")
 if defined VCVARS_DIR (
   call "%VCVARS_DIR%\vcvars%_VA%.bat"
   set "_VA="
-  goto :eof
+  goto :append_nabicloud_includes
 )
 set "_VW=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
 if not exist "%_VW%" set "_VW=%ProgramFiles%\Microsoft Visual Studio\Installer\vswhere.exe"
 for /f "usebackq tokens=*" %%v in (`"%_VW%" -latest -products * -property installationPath 2^>nul`) do call "%%v\VC\Auxiliary\Build\vcvars%_VA%.bat"
 set "_VA="
 set "_VW="
+
+:append_nabicloud_includes
+for %%r in ("%~dp0..\..\..") do set "_NABICLOUD_ROOT=%%~fr"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\raindrop-runtime\producer\ko\include"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\raindrop-runtime\resource\include"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\raindrop-runtime\resource\generated"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\raindrop-runtime\sdk\include"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\raindrop-runtime\core\include"
+set "INCLUDE=%INCLUDE%;%_NABICLOUD_ROOT%\cleanroom\include"
+set "_NABICLOUD_ROOT="
