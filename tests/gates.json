@@ -564,7 +564,7 @@
                 "windows/tsf/HanjaLearn.cpp",
                 "cleanroom/impl/clean/canonical/baram_hanja.c"
               ],
-              "includes": ["windows/tsf", "cleanroom/include"],
+              "includes": ["windows/tsf", "cleanroom/include", "raindrop-runtime/producer/ko/include", "raindrop-runtime/resource/include"],
               "extra_flags": ["/W4", "/MT", "/wd4996"]
             },
             "output_artifact_id": "hanja_probe_exe"
