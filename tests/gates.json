@@ -253,7 +253,7 @@
         ],
         "includes": [
           "hangul",
-          "../../windows/tsf"
+          "../../shared/input/include"
         ]
       },
       "run": {

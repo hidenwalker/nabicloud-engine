@@ -19,7 +19,7 @@
 
 #include "hangul.h"
 #include "hangulinternals.h"          /* hangul_keyboard_map_to_char */
-#include "nabicloud_builtin_keymaps.h" /* kNabicloudBuiltinKeymaps (windows/tsf, via /I) */
+#include "nabicloud_builtin_keymaps.h" /* kNabicloudBuiltinKeymaps (shared/input/include, via /I) */
 /* internal-meta (R2-3b/R4 registry equiv: shell type == engine). */
 int  hangul_keyboard_get_type(const HangulKeyboard* keyboard);
 
