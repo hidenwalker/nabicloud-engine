@@ -193,10 +193,10 @@
       "run": {
         "cwd": ".",
         "arguments": [
-          "tests/golden_pristine9_anchor.py",
+          {"repo_path": "shared/engine/tests/golden_pristine9_anchor.py"},
           "verify",
-          "tests/golden_all.txt",
-          "tests/golden_pristine9.anchor"
+          {"repo_path": "shared/engine/tests/golden_all.txt"},
+          {"repo_path": "shared/engine/tests/golden_pristine9.anchor"}
         ],
         "timeout_class": "short",
         "expected": {
@@ -220,7 +220,7 @@
       "run": {
         "cwd": ".",
         "arguments": [
-          "tests/runtime_checklist_catalog.py",
+          {"repo_path": "shared/engine/tests/runtime_checklist_catalog.py"},
           "check"
         ],
         "timeout_class": "medium",
