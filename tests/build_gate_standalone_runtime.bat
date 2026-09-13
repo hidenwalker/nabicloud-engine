@@ -82,7 +82,7 @@ cl /nologo /W4 /EHsc /utf-8 /std:c++17 /MT /wd4996 ^
   "%~dp0standalone_hanja_probe.cpp" ^
   "%ROOT%\windows\tsf\HanjaDict.cpp" ^
   "%ROOT%\windows\tsf\HanjaLearn.cpp" ^
-  "%ROOT%\shared\input\src\HanjaPolicy.cpp" ^
+  "%ROOT%\shared\input\src\HanjaPolicy.cpp" "%ROOT%\raindrop-runtime\producer\ko\korean_hanja_data_provider.cpp" ^
   "%ROOT%\cleanroom\impl\clean\canonical\baram_hanja.c" ^
   /Fe:"%HANJA_PROBE%" >> "%LOG%" 2>&1
 if errorlevel 1 (

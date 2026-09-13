@@ -563,6 +563,7 @@
                 "windows/tsf/HanjaDict.cpp",
                 "windows/tsf/HanjaLearn.cpp",
                 "shared/input/src/HanjaPolicy.cpp",
+                "raindrop-runtime/producer/ko/korean_hanja_data_provider.cpp",
                 "cleanroom/impl/clean/canonical/baram_hanja.c"
               ],
               "includes": ["windows/tsf", "cleanroom/include", "shared/input/include", "raindrop-runtime/producer/ko/include", "raindrop-runtime/resource/include"],
