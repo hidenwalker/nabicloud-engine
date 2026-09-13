@@ -26,6 +26,8 @@ int wmain(int argc, wchar_t** argv)
     }
 
     NabiCloud::HanjaDict dict;
+    // The standalone payload is also the isolated user root (no user file).
+    if (!dict.SetProductRoots(argv[1], argv[1])) return fail("explicit roots");
     if (!dict.Load(argv[1]) || !dict.IsLoaded())
     {
         return fail("HanjaDict load");
