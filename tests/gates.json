@@ -562,9 +562,10 @@
                 "shared/engine/tests/standalone_hanja_probe.cpp",
                 "windows/tsf/HanjaDict.cpp",
                 "windows/tsf/HanjaLearn.cpp",
+                "shared/input/src/HanjaPolicy.cpp",
                 "cleanroom/impl/clean/canonical/baram_hanja.c"
               ],
-              "includes": ["windows/tsf", "cleanroom/include", "raindrop-runtime/producer/ko/include", "raindrop-runtime/resource/include"],
+              "includes": ["windows/tsf", "cleanroom/include", "shared/input/include", "raindrop-runtime/producer/ko/include", "raindrop-runtime/resource/include"],
               "extra_flags": ["/W4", "/MT", "/wd4996"]
             },
             "output_artifact_id": "hanja_probe_exe"

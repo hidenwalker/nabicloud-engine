@@ -20,12 +20,14 @@ set "ROOT=%~dp0..\..\.."
 set "SLN=%ROOT%\windows\NabiCloud.sln"
 set "DLL=%ROOT%\windows\tsf\x64\Release\NabiCloud.dll"
 set "DICT_SRC=%ROOT%\shared\data\dictionary"
-set "LOG=%~dp0_standalone_runtime.log"
-set "PROBE=%~dp0_standalone_load_probe.exe"
-set "HANJA_PROBE=%~dp0standalone_hanja_probe.exe"
-set "STAND_DIR=%TEMP%\NabiCloudStandaloneGate_%RANDOM%%RANDOM%"
+set "WORK=%ROOT%\_gate_tmp\standalone-runtime"
+if not exist "%WORK%" mkdir "%WORK%"
+set "LOG=%WORK%\build.log"
+set "PROBE=%WORK%\standalone_load_probe.exe"
+set "HANJA_PROBE=%WORK%\standalone_hanja_probe.exe"
+set "STAND_DIR=%WORK%\payload_%RANDOM%%RANDOM%"
 
-msbuild "%SLN%" /m:1 /nr:false /p:Configuration=Release /p:Platform=x64 /p:TrackFileAccess=false /v:minimal > "%LOG%" 2>&1
+call "%ROOT%\windows\build_sln.cmd" x64 Release > "%LOG%" 2>&1
 if errorlevel 1 (
   echo STANDALONE_RUNTIME_FAIL [NabiCloud x64 build]
   type "%LOG%"
@@ -76,10 +78,11 @@ copy /Y "%DICT_SRC%\90-user.txt.template" "%STAND_DIR%\dictionary\" >> "%LOG%" 2
 if errorlevel 1 goto copydictfail
 
 cl /nologo /W4 /EHsc /utf-8 /std:c++17 /MT /wd4996 ^
-  /I"%ROOT%\windows\tsf" /I"%ROOT%\cleanroom\include" /Fo"%STAND_DIR%\\" ^
+  /I"%ROOT%\windows\tsf" /I"%ROOT%\shared\input\include" /I"%ROOT%\raindrop-runtime\producer\ko\include" /I"%ROOT%\raindrop-runtime\resource\include" /I"%ROOT%\cleanroom\include" /Fo"%STAND_DIR%\\" ^
   "%~dp0standalone_hanja_probe.cpp" ^
   "%ROOT%\windows\tsf\HanjaDict.cpp" ^
   "%ROOT%\windows\tsf\HanjaLearn.cpp" ^
+  "%ROOT%\shared\input\src\HanjaPolicy.cpp" ^
   "%ROOT%\cleanroom\impl\clean\canonical\baram_hanja.c" ^
   /Fe:"%HANJA_PROBE%" >> "%LOG%" 2>&1
 if errorlevel 1 (

@@ -1,4 +1,4 @@
-// standalone_hanja_probe.cpp -- prove clean HanjaDict works without libhangul.
+﻿// standalone_hanja_probe.cpp -- prove clean HanjaDict works without libhangul.
 
 #include <windows.h>
 #include <stdio.h>
@@ -41,6 +41,13 @@ int wmain(int argc, wchar_t** argv)
     if (suffixCount <= 0)
     {
         return fail("wiki longest suffix");
+    }
+
+    const auto* suffix = dict.GetCandidate(0);
+    if (!suffix || suffix->span.start != 0 || suffix->span.length != 1 ||
+        suffix->queryGroup != 0 || !suffix->MatchesRun(L"\xAC00"))
+    {
+        return fail("single suffix span");
     }
 
     int symbolCount = dict.Match(L"\x3131"); // "ㄱ" from 40-mssymbol-msime.txt.
