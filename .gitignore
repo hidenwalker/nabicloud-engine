@@ -50,3 +50,14 @@ tools/hangul
 */*.o
 */.deps
 */.libs
+
+# MSBuild owns these configuration/platform output directories.
+/Debug/
+/Release/
+/Win32/
+/x64/
+/libhangul/
+# Standalone test wrappers own this output space, never tests/ source inputs.
+/_build/
+# Python import cache is disposable bytecode, not source.
+__pycache__/

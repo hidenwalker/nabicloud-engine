@@ -12,22 +12,26 @@ REM ==========================================================================
 setlocal enabledelayedexpansion
 call "%~dp0find_vcvars.cmd" 64 >nul 2>&1
 set "ROOT=%~dp0.."
-pushd "%ROOT%"
+set "OUT=%ROOT%\_build\tests\preview_equiv"
+if not exist "%OUT%" mkdir "%OUT%"
+if not exist "%OUT%" exit /b 1
+pushd "%OUT%" || exit /b 1
 
-cl /nologo /W3 /D_CRT_SECURE_NO_WARNINGS tests\gate_editor_preview_equiv.c /Fe:tests\gate_editor_preview_equiv.exe /Fo:tests\ 1>tests\_build_preview_equiv.log 2>&1
+cl /nologo /W3 /D_CRT_SECURE_NO_WARNINGS "%ROOT%\tests\gate_editor_preview_equiv.c" /Fe:gate_editor_preview_equiv.exe /Fo:"%OUT%\\" 1>"%OUT%\build.log" 2>&1
 if errorlevel 1 (
   echo GATE_EDITOR_PREVIEW_EQUIV_FAIL build error:
-  type tests\_build_preview_equiv.log
-  popd ^& exit /b 1
+  type "%OUT%\build.log"
+  popd
+  exit /b 1
 )
 
 REM kbdir relative to engine ROOT (shared\engine): ..\data\keyboards
-tests\gate_editor_preview_equiv.exe "..\data\keyboards" > tests\_preview_equiv.txt 2>&1
+gate_editor_preview_equiv.exe "%ROOT%\..\data\keyboards" > "%OUT%\result.txt" 2>&1
 set "RC=!errorlevel!"
-type tests\_preview_equiv.txt
-findstr /C:"GATE_EDITOR_PREVIEW_EQUIV_PASS" tests\_preview_equiv.txt >nul 2>&1 || set "RC=1"
+type "%OUT%\result.txt"
+findstr /C:"GATE_EDITOR_PREVIEW_EQUIV_PASS" "%OUT%\result.txt" >nul 2>&1 || set "RC=1"
 if "!RC!"=="0" (
-  call tests\build_jaso_editor_verify.bat >nul 2>&1
+  call "%~dp0build_jaso_editor_verify.bat" >nul 2>&1
   if errorlevel 1 (
     echo GATE_EDITOR_PREVIEW_EQUIV_FAIL: build_jaso_editor_verify failed
     set "RC=1"

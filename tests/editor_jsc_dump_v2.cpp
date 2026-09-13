@@ -9,7 +9,7 @@
  *     "<hangul-keyboard type=\"nabicloud\">"
  *  -> "<hangul-keyboard id=\"ID\" type=\"nabicloud\">\n  <name>NAME</name>"
  *
- * (name escapes & < > ; id attr additionally escapes ") so each _jsc_v2/<id>.xml
+ * (name escapes & < > ; id attr additionally escapes ") so each output/<id>.xml
  * holds the EXACT bytes the JS editor (editor-core.js parseKeyboardXml) receives
  * in production. tests/jsc-diff-v2.js then proves JS parse->serialize reproduces
  * these bytes 1:1 (JS V2 serializer == C canonical dump + shell meta).

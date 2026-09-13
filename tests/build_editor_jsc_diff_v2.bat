@@ -16,7 +16,7 @@ REM  (1) Build editor_jsc_dump_v2.cpp against the LIVE V2 editor bridge
 REM      (jaso_xml_editor.cpp + v2backend.cpp + jaso engine kernel, the exact
 REM      source set of cleanroom build_jaso_editor_verify.cmd) -> dump each
 REM      kJasoBuiltin V2 keyboard's canonical serialization + shell meta
-REM      injection (SettingsWebView editorLoad replica) to tests\_jsc_v2\<id>.xml
+REM      injection (SettingsWebView editorLoad replica) to _build\tests\editor_jsc\xml\<id>.xml
 REM      (ephemeral, not committed).
 REM  (2) node tests\jsc-diff-v2.js checks the JS core (editor-core.js)
 REM      parseKeyboardXml -> serializeKeyboard reproduces those bytes exactly
@@ -31,8 +31,12 @@ set "HERE=%~dp0"
 set "CAN=%HERE%..\..\..\cleanroom\impl\clean\canonical"
 set "PROMO=%HERE%..\..\..\cleanroom\impl\promote-shinp2"
 set "PUB=%HERE%..\..\..\cleanroom\include"
-pushd "%CAN%"
-if not exist _jscv2 mkdir _jscv2
+set "OUT=%HERE%..\_build\tests\editor_jsc"
+if not exist "%OUT%\xml" mkdir "%OUT%\xml"
+if not exist "%OUT%\xml" exit /b 1
+if not exist "%OUT%\kernel" mkdir "%OUT%\kernel"
+if not exist "%OUT%\kernel" exit /b 1
+pushd "%OUT%" || exit /b 1
 
 REM Same C kernel set as build_jaso_editor_verify.cmd (editor bridge deps).
 set CSRC=engine-jaso-core.c jaso_strat.c jaso_noshift.c jaso_chord.c vm_strat.c jaso_xml_loader.c
@@ -42,21 +46,22 @@ set CSRC=%CSRC% jaso_layout_sebeol390.c jaso_layout_sebeol_final.c jaso_layout_g
 set CSRC=%CSRC% jamo_compat.c
 
 set CFILES=
+set OFILES=
 for %%F in (%CSRC%) do call set CFILES=%%CFILES%% "%CAN%\%%F"
-cl /nologo /W4 /utf-8 /std:c11 /c /I "%CAN%." /I "%PUB%" %CFILES% /Fo:_jscv2\ 1>_jscv2\_build.log 2>&1
-if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C kernel] & type _jscv2\_build.log & popd & exit /b 1 )
+for %%F in (%CSRC%) do call set OFILES=%%OFILES%% "kernel\%%~nF.obj"
+cl /nologo /W4 /utf-8 /std:c11 /c /I "%CAN%." /I "%PUB%" %CFILES% /Fo:kernel\ 1>_build.log 2>&1
+if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C kernel] & type _build.log & popd & exit /b 1 )
 
 cl /nologo /W4 /utf-8 /std:c++17 /I "%CAN%." /I "%PUB%" /I "%PROMO%" ^
    "%PROMO%\v2backend.cpp" "%CAN%\jaso_xml_editor.cpp" "%HERE%editor_jsc_dump_v2.cpp" ^
-   _jscv2\*.obj /Fe:_jscv2\_editor_jsc_dump_v2.exe /Fo:_jscv2\ 1>>_jscv2\_build.log 2>&1
-if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C++ bridge] & type _jscv2\_build.log & popd & exit /b 1 )
+   %OFILES% /Fe:_editor_jsc_dump_v2.exe /Fo:.\ 1>>_build.log 2>&1
+if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C++ bridge] & type _build.log & popd & exit /b 1 )
 
-if not exist "%HERE%_jsc_v2" mkdir "%HERE%_jsc_v2"
-del /q "%HERE%_jsc_v2\*.xml" 2>nul
-_jscv2\_editor_jsc_dump_v2.exe "%HERE%_jsc_v2"
+del /q "%OUT%\xml\*.xml" 2>nul
+_editor_jsc_dump_v2.exe "%OUT%\xml"
 if errorlevel 1 ( echo JSC_DIFF_V2_FAIL dump error & popd & exit /b 1 )
 popd
 
-node "%HERE%jsc-diff-v2.js"
+node "%HERE%jsc-diff-v2.js" "%OUT%\xml"
 if errorlevel 1 exit /b 1
 exit /b 0

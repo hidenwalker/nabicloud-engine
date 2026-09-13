@@ -14,8 +14,11 @@ if not exist "%DLL%" (
   echo GATE_PRISTINE_IMPORTS_FAIL: NabiCloud.dll not found ^(build NabiCloud.sln first^)
   exit /b 1
 )
-dumpbin /imports "%DLL%" > "%~dp0_pristine_imports.txt" 2>&1
+set "OUT=%~dp0..\_build\tests\pristine_imports"
+if not exist "%OUT%" mkdir "%OUT%"
+if not exist "%OUT%" exit /b 1
+dumpbin /imports "%DLL%" > "%OUT%\imports.txt" 2>&1
 set "ENF="
 if /I "%~1"=="ENFORCE" set "ENF=-Enforce"
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0gate_pristine_imports.ps1" "%~dp0_pristine_imports.txt" %ENF%
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0gate_pristine_imports.ps1" "%OUT%\imports.txt" %ENF%
 exit /b %errorlevel%

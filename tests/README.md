@@ -5,6 +5,23 @@
 
 ## 실행
 
+### 시험 산출 경계
+
+직접 실행하는 keymap·preview·JS/C 직렬화·import wrapper는 엔진 루트의
+`_build/tests/`에 실행 산출을 둔다. 소스·골든은 `tests/`에서 읽으며 바꾸지 않는다.
+
+| wrapper | 엔진 루트 기준 출력 | 소비자 |
+|---|---|---|
+| `build_gate_shell_keymap_equiv.bat` | `_build/tests/keymap_equiv/` (sources.rsp·obj·exe·build.log·result.txt) | 같은 wrapper의 PASS 토큰 검사 |
+| `build_gate_editor_preview_equiv.bat` | `_build/tests/preview_equiv/` (obj·exe·build.log·result.txt) | 같은 wrapper의 PASS 토큰 검사 후 `build_jaso_editor_verify.bat` 실행 |
+| `build_editor_jsc_diff_v2.bat` | `_build/tests/editor_jsc/` (kernel/·obj·exe·log·xml/) | `jsc-diff-v2.js [덤프 디렉터리]`; 인자 생략 시 같은 xml/ 경로 |
+| `gate_pristine_imports.bat [ENFORCE]` | `_build/tests/pristine_imports/imports.txt` | `gate_pristine_imports.ps1`의 기존 감사/강제 모드 |
+
+MSBuild의 `Debug/`, `Release/`, `Win32/`, `x64/`, `libhangul/`는 제품 빌드 출력 계약을 유지한다.
+이 디렉터리와 `_build/`, Python `__pycache__/`의 무시 규칙은 엔진 `.gitignore`가
+소유한다. 부모 저장소의 무시 규칙은 서브모듈 내부에 적용되지 않는다.
+`tests/` 전체나 임의 미추적 소스는 무시하지 않는다. 기존 runner의 저장소 검사는 유지한다.
+
 ```
 tests\run_all_gates.bat      REM ★전 게이트 일괄(아래 인벤토리 전부) — ALL_GATES_PASS(exit0)/GATES_FAIL(n)
 tests\build_and_verify.bat   REM 단일 게이트(3gs 기본 골든)

@@ -3,7 +3,7 @@
    JS↔C 직렬화 differential V2판 (2026-07-02 재신설) — 의존 0(node 내장).
 
    은퇴한 jsc-diff.js(구 스키마 parseXml/serialize, RETIRED build_editor_jsc_diff)
-   의 V2 후계. editor_jsc_dump_v2.exe 가 tests/_jsc_v2/<id>.xml 에 써둔
+   의 V2 후계. editor_jsc_dump_v2.exe 가 _build/tests/editor_jsc/xml/<id>.xml 에 써둔
    "C 정본 V2 직렬화(jaso_editor_serialize_by_id→jaso_xml_dump) + 셸 메타 주입
    (SettingsWebView editorLoad 복제)" 바이트를, JS 코어(editor-core.js)의
    parseKeyboardXml→serializeKeyboard 가 bytes 그대로 재현하는지 검증한다
@@ -17,7 +17,7 @@ const path = require("node:path");
 const core = require(path.join(__dirname, "..", "..", "..", "windows", "settings", "tests", "editor-core.js"));
 const { parseKeyboardXml, serializeKeyboard, canonJasoModel, isV2Xml, isVmXml } = core;
 
-const DIR = path.join(__dirname, "_jsc_v2");
+const DIR = process.argv[2] || path.join(__dirname, "..", "_build", "tests", "editor_jsc", "xml");
 const MIN = 14;   // kJasoBuiltin 14종(덤프가 조용히 줄면 드리프트) — editor_jsc_dump_v2.cpp kKb[]
 
 let files;
@@ -28,7 +28,7 @@ try {
   process.exit(1);
 }
 if (files.length < MIN) {
-  console.error("JSC_DIFF_V2_FAIL: _jsc_v2 에 " + files.length + "개 (< " + MIN + ") — 덤프 축소 드리프트.");
+  console.error("JSC_DIFF_V2_FAIL: " + DIR + " 에 " + files.length + "개 (< " + MIN + ") — 덤프 축소 드리프트.");
   process.exit(1);
 }
 
