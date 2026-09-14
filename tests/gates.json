@@ -578,6 +578,7 @@
                 "cleanroom/impl/clean/canonical/baram_hanja.c"
               ],
               "includes": ["windows/tsf", "cleanroom/include", "shared/input/include", "raindrop-runtime/producer/ko/include", "raindrop-runtime/resource/include"],
+              "logical_libraries": ["advapi32"],
               "extra_flags": ["/W4", "/MT", "/wd4996"]
             },
             "output_artifact_id": "hanja_probe_exe"
