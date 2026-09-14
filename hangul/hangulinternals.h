@@ -18,6 +18,9 @@
 #ifndef libhangul_hangulinternals_h
 #define libhangul_hangulinternals_h
 
+#include <stddef.h>
+#include "hangul.h"
+
 #define N_ELEMENTS(array) (sizeof (array) / sizeof ((array)[0]))
 #ifndef countof
 #define countof(array) (sizeof (array) / sizeof ((array)[0]))
@@ -36,7 +39,7 @@ ucschar hangul_keyboard_map_to_char(const HangulKeyboard* keyboard,
 	    int tableid, unsigned key);
 
 int hangul_keyboard_list_init(const char* user_defined_keyboard_path);
-int hangul_keyboard_list_fini();
+int hangul_keyboard_list_fini(void);
 
 const HangulKeyboard* hangul_keyboard_list_get_keyboard(const char* id);
 

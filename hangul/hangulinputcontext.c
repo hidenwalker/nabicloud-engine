@@ -1434,13 +1434,15 @@ hangul_ic_set_keyboard(HangulInputContext *hic, const HangulKeyboard* keyboard)
     hic->tableid = 0;
 }
 
-void
+/* NabiCloud modification, 2026-09-14: reapply #66 without changing composition. */
+bool
 hangul_ic_switch_keyboard_table(HangulInputContext *hic, int tableid)
 {
-    if (hic == NULL)
-        return;
+    if (hic == NULL || (unsigned)tableid >= HANGUL_KEYBOARD_TABLE_COUNT)
+        return false;
 
     hic->tableid = tableid;
+    return true;
 }
 
 /**

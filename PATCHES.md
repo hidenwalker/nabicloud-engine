@@ -5,6 +5,37 @@ libhangul 0.2.0 대비 의도적 차이를 **기능 단위**로 정리한 것이
 소스 상단 주석에도 있다. (재구조화 Steps 2~7 진행 시 코드가 이동하면 본 문서의
 "이전 후 위치" 열을 갱신한다.)
 
+## 현재 유지 차이 (2026-09-14 R-B5ENG)
+
+기준은 `UPSTREAM.md`의 libhangul 0.2.0이다. 44dd4b8f의 순정 교체는 아래 보안 수정까지
+누락했다. 이 표는 **지금 유지해야 하는 의미**이며 아래 P# 표는 교체 전 이력이다.
+
+| 기능·출처 | 현재 위치 | 유지 이유·직접 재현 |
+|---|---|---|
+| 바이너리 사전 I/O (`79f310bd`, 고지 `dae967a3`) | `hangul/hanja.c` `hanja_table_load` | 2026-06-12 우리 수정. MSVC LF 사전의 ftell/fseek 바이트 오프셋 일치. `rb` 유지 |
+| 입력·할당 방어 (`0c28e944`) | `hanja_read_line`, `hanja_parse_line`, `hanja_table_load`, `hanja_table_match` | 2026-09-14 현 2-pass 인덱스에 의미 재적용. 빈/열 누락/과장행/NUL/빈 테이블/할당 실패를 거부하고 libhangul 결과 최대 1024. `tests/hanja_parser_repro.c` |
+| 단일 키 인덱스 (`e5a00611`) | `hanja_table_load` 2차 pass 직전 `last_key[0]=0` | 첫 pass의 마지막 키가 둘째 pass의 첫 키를 삼키지 않음. 같은 재현 `single-key` |
+| XML K1~K4 (`2f83d98f`) | `hangul/hangulkeyboard.c` Expat 콜백·include 로딩 | mini parser는 되살리지 않음. NULL type/id/name·부모 없는 item·절대/상위 include 방어를 현 파서에 재적용. `tests/keyboard_parser_repro.c` |
+| tableid 범위 (`a243e5f3`) | `hangul.h`, `hangulinputcontext.c`, `hangulkeyboard.c` | 실제 배열 4개와 공개 상수 결속. -1/4 거부 시 이전 tableid 보존. bool 반환 원형 복원; 기존 바이너리 배포 전 재빌드 필요 |
+| 무인자 C 원형·stdint (`bcd677df`) | `hangul.h`, `hangulinternals.h` | `(void)`·최소 정수 헤더 복원. internal header가 공개 타입 정의를 직접 포함 |
+| Windows 빌드·Expat 적응 | `libhangul.vcxproj`, `win32/`, `expat-upstream` | 현재 `/MT`, 외부 XML 로딩은 Expat. mini loader 복원 없음 |
+
+재현 소스는 게이트가 아니며 상위 `docs/TEST_DESIGN_GUIDELINES.md`의 재사용 하네스 목록에
+기동법을 등재한다. 순정 9자판은 `tests/build_and_verify_all.bat` 및
+`tests/golden_pristine9_anchor.py verify tests/golden_all.txt tests/golden_pristine9.anchor`로
+직접 확인한다. 이 검증은 9자판 출력 경계이며 보안 입력의 재현을 대체하지 않는다.
+
+`hanja_table_search_prefix`와 `hanja_table_load_wide`를 구름 소스에서 복사해 되살리지 않는다.
+제품 한자 완성은 상위 `KoreanHanjaDataProvider` → 공용 정책 C API와 기존 canonical
+`baram_hanja_match`/RUI FST/SQLite 단일 경로가 제공한다. native 파일명·byte 읽기는 OS port 소유다.
+export 목록 축소는 별도 사용자 결정이며 이번 변경은 `libhangul.def`를 줄이지 않는다.
+
+## 교체 전 P1~P10 이력 (현재 위치·LIVE 표기를 현행으로 읽지 말 것)
+
+다음 표는 2026-06-15~21 분리 과정의 기록이다. F-3의 R4~R8와 44dd4b8f 뒤에는 P1~P5,
+P8~P10의 옛 TU·struct·type 디스패치가 제거됐다. 제품의 독립 V2 구현과 외부 XML이 해당
+기능을 소유한다. 역사적 출처·라이선스 고지는 보존하며, 옛 위치를 재생성하지 않는다.
+
 | # | 기능 | 출처 계보 | 현재 위치 | 라이선스 | 비고 |
 |---|------|-----------|-----------|----------|------|
 | P1 | sunarae(순아래) 조합 엔진 (`TYPE_NABICLOUD=99`, 구 `_GUREUM`, process/push/backspace + 318na multikey 전처리) | gureum/libhangul (0.1.0 포크) | `nabicloud/engine/engine.c`(본체: `nabicloud_engine_process`/`_backspace`/`_push`/`_buffer_backspace`/`_multikey_proc`) + `hangul/engine.h` 선언, `hangul/hangulinputcontext.c`(얇은 디스패치 hook 3지점) | LGPL-2.1 (병합본) + BSD 고지(GUREUM-COPYING) | **Step4 완료(2026-06-15)**: 엔진을 `hangul/hangulinputcontext.c` 의 static `hangul_ic_process_gureum`/`hangul_ic_push_gureum`/`hangul_buffer_backspace_gureum` 에서 `nabicloud/engine/engine.c` 로 VERBATIM 이전(로직 무변). upstream 입력컨텍스트는 type==NABICLOUD 디스패치 hook(본처리 switch·backspace 분기·multikey 전처리)만 보유 |
@@ -18,7 +49,7 @@ libhangul 0.2.0 대비 의도적 차이를 **기능 단위**로 정리한 것이
 | P10 | 신세벌(jaso-shin) 조합 엔진 — **[동작·LIVE]** (`TYPE_JASO_SHIN=1002`/`_SHIFT=1003`/`_YET=1004`) | **3beol — yous/libhangul (branch `gureum-1.11.1`, HEAD `bb8fcb3`)** | 엔진: `nabicloud/engine/engine-jasoshin.c`(`nabicloud_engine_shin_process`/`_shift_process`/`_yet_process`) + `.h`. dispatch: baram(산들바람) 라우팅(`baram.c`(옛 engine-ops.c) `kBaram_shin`/`_shift`/`_yet` → `dispatch.c` `nabicloud_baram_lookup`). type: `hangul/hangul.h`(1002~1004 정의). 데이터: `nabicloud/layouts/layout-3shin.h`(9종 자판). 등록: `hangul/hangulkeyboard.c` 빌트인 9종 + 골든 포함(golden_all idx 13~21) | **LGPL-2.1-or-later (yous/libhangul lineage)** — 코어와 동일 계열·GPL 경계 불요(상류 COPYING=LGPL v2.1) | **S5 [동작]**: 실측(3beol hangulinputcontext.c `hangul_ic_process_jaso_shin_sebeol` 2057~2405 / `_shift` 3398~3591 / `_yet` 3117~3396)을 충실 이식. 확장레이아웃 인프라(`buffer.right_oua`·IC 옵션 `option_extended_layout_*`·HangulKeyboard `flag[]`/`addon_*` 컬럼+접근자·ctype `hangul_ascii_to_symbol_shin`·_yet capslock 채널) 이식 완료. baram(산들바람) 라우팅으로 LIVE. 차분검증: `build_and_verify_jasoshin.bat`→`JASOSHIN_PASS` |
 | P9 | 3finalsun(세벌식 3-91 Final 순아래) 조합 엔진 + 3-91-noshift 자판 (`TYPE_FINALSUN=1010`) | **3beol — yous/libhangul (branch `gureum-1.11.1`, HEAD `bb8fcb3`)** | 엔진: `nabicloud/engine/engine-finalsun.c`(`nabicloud_engine_finalsun_process`) + `.h` 선언, `nabicloud/engine/dispatch.c`(FINALSUN case 1줄, `ascii` 전달). 데이터: `nabicloud/layouts/layout-3finalsun.c`(3-91-noshift 키맵 128 + 조합표 243 active) + `.h`. 인프라: `hangulinternals.h` `_HangulBuffer` 에 trailing `ucschar shift` 1필드 추가 + `hangulinputcontext.c hangul_buffer_clear` 에 `shift=0`. 등록: `hangul/hangulkeyboard.c`(`3-91-noshift` 빌트인) | **LGPL-2.1-or-later (yous/libhangul lineage)** — 코어와 동일 계열·GPL 경계 불요(상류 COPYING=LGPL v2.1; 318na 만 GPL-3.0) | **S5 완료(2026-06-16)**: 3beol `hangul_ic_process_3finalsun`(hangulinputcontext.c 2407~2630)을 statement-for-statement 충실 이식. 적응 2곳만: (1) LOOSE_ORDER flag 인프라 부재→`option_auto_reorder` 단독(3-91-noshift LOOSE_ORDER=false라 등가), (2) upstream-private `FALSE` 매크로 대신 `!hangul_buffer_is_empty(...)`. 종성시프트 글쇠 `[`→SHKEY 센티넬(0x11ff)로 치환→combination[0]의 0x11ff* 쌍으로 겹받침 형성/회전. 표준 jamo 버퍼+combination[0]만 사용(갈마들이표 combination[2] 불요, `hangul_ic_combine` 본체 무수정). 키맵·조합표는 3beol 원본과 byte 동일 전사(정렬 1쌍 의도적 역순 0x11751171→0x1175116c·주석처리 3행 포함 그대로 — bsearch 동작 동일). 신규 의존은 `buffer.shift` 단일 필드뿐(trailing·C zero-fill→3gs/2/318na/갈마들이 골든 byte 불변). 차분검증: `tests/build_and_verify_finalsun.bat`(우리 출력 == 3beol 레퍼런스 `golden_finalsun.txt`, `FINALSUN_PASS`) |
 
-## 미적용(재구조화 중 함께 고정 예정)
+## 당시 미적용 기록 (현재 K1~K4는 위 표대로 적용)
 
 - **K1~K4 — 외부 자판 로더 메모리 안전 결함**(미수정): `hangulkeyboard.c` 의
   type NULL·item current_element NULL·include 경로순회·id `strdup(NULL)`.
@@ -27,7 +58,7 @@ libhangul 0.2.0 대비 의도적 차이를 **기능 단위**로 정리한 것이
 - **318na 자판**(미편입): GPL-3.0 경계. Step7 에서 `nabicloud/layouts/318na` 로
   데이터+정책 추가 시 라이선스 경계를 NOTICE 에 명시.
 
-## 검증
+## 당시 검증 기록 (현재 실행 목록이 아님)
 
 모든 차이는 `tests/` 골든 게이트(`build_and_verify.bat` → `GOLDEN_PASS`)로 동작
 불변을 보증한다. 자세한 기준점은 `UPSTREAM.md` 참조.

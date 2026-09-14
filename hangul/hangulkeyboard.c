@@ -94,6 +94,9 @@ struct _HangulKeyboard {
     bool is_static;
 };
 
+typedef char nabicloud_keyboard_table_count_check[
+    HANGUL_KEYBOARD_TABLE_COUNT == countof(((HangulKeyboard*)0)->table) ? 1 : -1];
+
 typedef struct _HangulKeyboardList {
     size_t n;
     size_t nalloced;
@@ -424,7 +427,7 @@ hangul_keyboard_set_id(HangulKeyboard* keyboard, const char* id)
 	return;
 
     free(keyboard->id);
-    keyboard->id = strdup(id);
+    keyboard->id = strdup(id ? id : "");
 }
 
 void
@@ -437,7 +440,7 @@ hangul_keyboard_set_name(HangulKeyboard* keyboard, const char* name)
 	return;
 
     free(keyboard->name);
-    keyboard->name = strdup(name);
+    keyboard->name = strdup(name ? name : "");
 }
 
 ucschar
@@ -555,6 +558,25 @@ hangul_keyboard_combine(const HangulKeyboard* keyboard,
 }
 
 #if ENABLE_EXTERNAL_KEYBOARDS
+/* NabiCloud modification, 2026-09-14: restore K1..K4 input protection from
+ * the retired mini XML loader to the active upstream Expat callbacks. */
+static int
+include_path_is_safe(const char* file)
+{
+    const char* component;
+    const char* p;
+    if (!file || !file[0] || file[0] == '/') return 0;
+    component = file;
+    for (p = file;; ++p) {
+        if (*p == '\\' || *p == ':') return 0;
+        if (*p == '/' || *p == '\0') {
+            if (p - component == 2 && component[0] == '.' && component[1] == '.') return 0;
+            if (*p == '\0') return 1;
+            component = p + 1;
+        }
+    }
+}
+
 static const char*
 attr_lookup(const char** attr, const char* name)
 {
@@ -592,11 +614,13 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	    hangul_keyboard_delete(context->keyboard);
 	}
 	context->keyboard = hangul_keyboard_new();
+        if (!context->keyboard) return;
 
 	const char* id = attr_lookup(attr, "id");
 	hangul_keyboard_set_id(context->keyboard, id);
 
 	const char* typestr = attr_lookup(attr, "type");
+        if (!typestr) typestr = "";
 	int type = HANGUL_KEYBOARD_TYPE_JAMO;
 	if (strcmp(typestr, "jamo") == 0) {
 	    type = HANGUL_KEYBOARD_TYPE_JAMO;
@@ -650,7 +674,7 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	    context->keyboard->combination[id] = hangul_combination_new();
 	}
     } else if (strcmp(element, "item") == 0) {
-	if (context->keyboard == NULL)
+	if (context->keyboard == NULL || context->current_element == NULL)
 	    return;
 
 	unsigned int id = context->current_id;
@@ -668,29 +692,27 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	}
     } else if (strcmp(element, "include") == 0) {
 	const char* file = attr_lookup(attr, "file");
-	if (file == NULL)
+	if (!include_path_is_safe(file))
 	    return;
 
         int top = context->path_stack_top;
         if (top < 0)
             return;
 
-        size_t n = strlen(file) + strlen(context->path_stack[top]) + 1;
+        const char* parent = context->path_stack[top];
+        const char* slash = strrchr(parent, '/');
+#ifdef _WIN32
+        const char* backslash = strrchr(parent, '\\');
+        if (backslash && (!slash || backslash > slash)) slash = backslash;
+#endif
+        size_t directory_size = slash ? (size_t)(slash - parent + 1) : 0;
+        size_t n = strlen(file) + directory_size + 1;
 	char* path = malloc(n);
 	if (path == NULL)
 	    return;
 
-	if (file[0] == '/') {
-	    strncpy(path, file, n);
-	} else {
-	    char* orig_path = strdup(context->path_stack[top]);
-	    char* last_slash = strrchr(orig_path, '/');
-	    if (last_slash)
-		last_slash[0] = '\0';
-
-	    snprintf(path, n, "%s/%s", orig_path, file);
-	    free(orig_path);
-	}
+        memcpy(path, parent, directory_size);
+        memcpy(path + directory_size, file, strlen(file) + 1);
 
 	hangul_keyboard_parse_file(path, context);
 	free(path);
@@ -752,6 +774,7 @@ hangul_keyboard_parse_file(const char* path, HangulKeyboardLoadContext* context)
     context->path_stack_top = top;
 
     XML_Parser parser = XML_ParserCreate(NULL);
+    if (!parser) { context->path_stack_top--; return; }
 
     XML_SetUserData(parser, context);
     XML_SetElementHandler(parser, on_element_start, on_element_end);

@@ -34,6 +34,8 @@
  * serialize to NULL (editor non-target), mirroring jaso_editor_verify edges.
  */
 #include "jaso_xml_editor.h"
+#include "selftest_xml_fixture.h"
+#include "v2backend.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,10 +81,14 @@ static void esc_append(std::string& o, const char* s, bool attr)
 
 int main(int argc, char** argv)
 {
-    if (argc < 2) {
-        printf("JSC_DUMP_V2_FAIL: usage: editor_jsc_dump_v2 <outdir>\n");
+    if (argc != 3) {
+        printf("JSC_DUMP_V2_FAIL: usage: editor_jsc_dump_v2 <outdir> <keyboard-directory>\n");
         return 1;
     }
+    jaso_layout *pyet = selftest_xml_fixture(argv[2], "3shin-p-yet.xml");
+    jaso_layout *p2yet = selftest_xml_fixture(argv[2], "3shin-p2-yet.xml");
+    if (!pyet || !p2yet || !v2backend_register_layout("3shin-p-yet", pyet) ||
+        !v2backend_register_layout("3shin-p2-yet", p2yet)) return 1;
     const char* outdir = argv[1];
     static const char kRootOld[] = "<hangul-keyboard type=\"nabicloud\">";
 
@@ -146,6 +152,8 @@ int main(int argc, char** argv)
         }
     }
 
-    printf("JSC_DUMP_V2_OK: %d V2 builtin canonical XMLs -> %s\n", n, outdir);
+    jaso_xml_free(pyet);
+    jaso_xml_free(p2yet);
+    printf("JSC_DUMP_V2_OK: %d V2 canonical XMLs -> %s\n", n, outdir);
     return 0;
 }

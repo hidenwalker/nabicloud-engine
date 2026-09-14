@@ -16,6 +16,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+/* NabiCloud modification, 2026-09-14: restore dictionary input validation,
+ * allocation checks and bounded results lost during the pristine rebase.
+ * Preserve our 2026-06-12 binary-mode I/O fix (79f310bd): MSVC ftell/fseek
+ * must use physical byte offsets for LF-only as well as CRLF dictionaries. */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -389,7 +394,7 @@ hanja_list_reserve(HanjaList* list, size_t n)
     }
 }
 
-static void
+static int
 hanja_list_append_n(HanjaList* list, const Hanja* hanja, int n)
 {
     hanja_list_reserve(list, n);
@@ -399,7 +404,45 @@ hanja_list_append_n(HanjaList* list, const Hanja* hanja, int n)
 	for (i = 0; i < n ; i++)
 	    list->items[list->len + i] = hanja + i;
 	list->len += n;
+        return 1;
     }
+    return 0;
+}
+
+/* Consume one whole physical line. Oversize/NUL-containing lines are rejected
+ * as a unit, so their tail cannot become another dictionary entry. */
+static int
+hanja_read_line(FILE* file, char* buf, size_t capacity)
+{
+    size_t n = 0;
+    int c, invalid = 0, any = 0;
+    while ((c = fgetc(file)) != EOF) {
+        any = 1;
+        if (c == '\n') break;
+        if (c == 0 || n + 1 >= capacity) invalid = 1;
+        else buf[n++] = (char)c;
+    }
+    if (n && buf[n - 1] == '\r') --n;
+    buf[invalid ? 0 : n] = '\0';
+    return any;
+}
+
+/* Preserve empty columns; strtok skips them and can promote a comment to value.
+ * Both index passes and lookup use this same validation. */
+static int
+hanja_parse_line(char* buf, char** key, char** value, char** comment)
+{
+    char* separator;
+    if (!buf[0] || buf[0] == '#') return 0;
+    separator = strchr(buf, ':');
+    if (!separator || separator == buf) return 0;
+    *separator = '\0';
+    *key = buf;
+    *value = separator + 1;
+    separator = strchr(*value, ':');
+    if (separator) { *separator = '\0'; *comment = separator + 1; }
+    else *comment = NULL;
+    return **value != '\0';
 }
 
 static void
@@ -409,6 +452,9 @@ hanja_table_match(const HanjaTable* table,
     int low, high, mid;
     int res = -1;
 
+    if (!table || !table->file || !table->keytable || !table->nkeys ||
+        table->nkeys > INT_MAX || !key || !list || (*list && (*list)->len >= 1024))
+        return;
     low = 0;
     high = table->nkeys - 1;
 
@@ -434,11 +480,12 @@ hanja_table_match(const HanjaTable* table,
 	char buf[512];
 
 	offset = table->keytable[mid].offset;
-	fseek(table->file, offset, SEEK_SET);
+	if (fseek(table->file, offset, SEEK_SET) != 0) return;
 
-	while (fgets(buf, sizeof(buf), table->file) != NULL) {
-	    char* save = NULL;
-	    char* p = strtok_r(buf, ":", &save);
+	while (hanja_read_line(table->file, buf, sizeof(buf))) {
+	    char *p, *value, *comment;
+            Hanja* hanja;
+            if (!hanja_parse_line(buf, &p, &value, &comment)) continue;
 	    res = strcmp(p, key);
 	    if (res == 0) {
                 if (*list == NULL) {
@@ -449,12 +496,13 @@ hanja_table_match(const HanjaTable* table,
                     break;
                 }
 
-		char* value   = strtok_r(NULL, ":", &save);
-		char* comment = strtok_r(NULL, "\r\n", &save);
-
-		Hanja* hanja = hanja_new(p, value, comment);
-
-		hanja_list_append_n(*list, hanja, 1);
+                hanja = hanja_new(p, value, comment);
+                if (!hanja) break;
+                if (!hanja_list_append_n(*list, hanja, 1)) {
+                    hanja_delete(hanja);
+                    break;
+                }
+                if ((*list)->len >= 1024) break;
 	    } else if (res > 0) {
 		break;
 	    }
@@ -486,8 +534,9 @@ hanja_table_load(const char* filename)
     char buf[512];
     int key_size = 5;
     char last_key[8] = { '\0', };
-    char* save_ptr = NULL;
     char* key;
+    char* value;
+    char* comment;
     long offset;
     unsigned i;
     FILE* file;
@@ -507,48 +556,44 @@ hanja_table_load(const char* filename)
     }
 
     nkeys = 0;
-    while (fgets(buf, sizeof(buf), file) != NULL) {
-	/* skip comments and empty lines */
-	if (buf[0] == '#' || buf[0] == '\r' || buf[0] == '\n' || buf[0] == '\0')
-	    continue;
-
-	save_ptr = NULL;
-	key = strtok_r(buf, ":", &save_ptr);
-
-	if (key == NULL || strlen(key) == 0)
+    while (hanja_read_line(file, buf, sizeof(buf))) {
+	if (!hanja_parse_line(buf, &key, &value, &comment))
 	    continue;
 
 	if (strncmp(last_key, key, key_size) != 0) {
 	    nkeys++;
 	    strncpy(last_key, key, key_size);
 	}
+        if (nkeys >= INT_MAX || nkeys > SIZE_MAX / sizeof(keytable[0])) {
+            fclose(file);
+            return NULL;
+        }
     }
 
+    if (!nkeys || ferror(file)) { fclose(file); return NULL; }
     rewind(file);
+    memset(last_key, 0, sizeof(last_key));
     keytable = malloc(nkeys * sizeof(keytable[0]));
+    if (!keytable) { fclose(file); return NULL; }
     memset(keytable, 0, nkeys * sizeof(keytable[0]));
 
     i = 0;
-    offset = ftell(file);
-    while (fgets(buf, sizeof(buf), file) != NULL) {
-	/* skip comments and empty lines */
-	if (buf[0] == '#' || buf[0] == '\r' || buf[0] == '\n' || buf[0] == '\0')
-	    continue;
-
-	save_ptr = NULL;
-	key = strtok_r(buf, ":", &save_ptr);
-
-	if (key == NULL || strlen(key) == 0)
+    for (;;) {
+        offset = ftell(file);
+        if (offset < 0 || (unsigned long)offset > UINT_MAX) goto invalid_table;
+        if (!hanja_read_line(file, buf, sizeof(buf))) break;
+	if (!hanja_parse_line(buf, &key, &value, &comment))
 	    continue;
 
 	if (strncmp(last_key, key, key_size) != 0) {
+            if (i >= nkeys) goto invalid_table;
 	    keytable[i].offset = offset;
 	    strncpy(keytable[i].key, key, key_size);
 	    strncpy(last_key, key, key_size);
 	    i++;
 	}
-	offset = ftell(file);
     }
+    if (i != nkeys || ferror(file)) goto invalid_table;
 
     table = malloc(sizeof(*table));
     if (table == NULL) {
@@ -563,6 +608,11 @@ hanja_table_load(const char* filename)
     table->file = file;
 
     return table;
+
+invalid_table:
+    free(keytable);
+    fclose(file);
+    return NULL;
 }
 
 /**

@@ -61,3 +61,7 @@ tools/hangul
 /_build/
 # Python import cache is disposable bytecode, not source.
 __pycache__/
+
+# MSBuild ARM64/ARM64X compiler outputs, matching x64/Win32 output ownership.
+/ARM64/
+/ARM64EC/

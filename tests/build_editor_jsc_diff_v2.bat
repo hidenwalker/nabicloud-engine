@@ -41,7 +41,7 @@ pushd "%OUT%" || exit /b 1
 REM Same C kernel set as build_jaso_editor_verify.cmd (editor bridge deps).
 set CSRC=engine-jaso-core.c jaso_strat.c jaso_noshift.c jaso_chord.c vm_strat.c jaso_xml_loader.c
 set CSRC=%CSRC% jaso_layout_p2.c jaso_layout_shinp.c jaso_layout_shin2012.c jaso_layout_shin2015.c
-set CSRC=%CSRC% jaso_layout_shinm.c jaso_layout_shinp_yet.c jaso_layout_p2yet.c jaso_layout_3gs.c
+set CSRC=%CSRC% jaso_layout_shinm.c jaso_layout_3gs.c
 set CSRC=%CSRC% jaso_layout_sebeol390.c jaso_layout_sebeol_final.c jaso_layout_galmadeuli.c jaso_layout_dubeol_std.c jaso_layout_3sun2014.c
 set CSRC=%CSRC% jamo_compat.c
 
@@ -58,7 +58,7 @@ cl /nologo /W4 /utf-8 /std:c++17 /I "%CAN%." /I "%PUB%" /I "%PROMO%" ^
 if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C++ bridge] & type _build.log & popd & exit /b 1 )
 
 del /q "%OUT%\xml\*.xml" 2>nul
-_editor_jsc_dump_v2.exe "%OUT%\xml"
+_editor_jsc_dump_v2.exe "%OUT%\xml" "%HERE%..\..\data\keyboards"
 if errorlevel 1 ( echo JSC_DIFF_V2_FAIL dump error & popd & exit /b 1 )
 popd
 
