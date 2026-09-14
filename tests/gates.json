@@ -137,6 +137,16 @@
         "reason": "R4 rearm pending (Codex B-spike GO for B' load_dir removal, cleanroom/f3-r2-loaddir-bspike-codex-verdict.md) -- not currently wired into run_all_gates.bat, dormant until R4 executes",
         "role": "orphan_pending",
         "retire_stage": "R4_rearm"
+      },
+      {
+        "path": "tests/hanja_parser_repro.c",
+        "reason": "manual reproduction harness for the libhangul hanja.c dictionary input-defense re-application (R-B5ENG, 2026-09-15): compiled and run by hand against the real parser to show FAIL before / PASS after; listed in docs/TEST_DESIGN_GUIDELINES.md existing-harness table -- not a gate itself",
+        "role": "dev_tool"
+      },
+      {
+        "path": "tests/keyboard_parser_repro.c",
+        "reason": "manual reproduction harness for the libhangul hangulkeyboard.c Expat XML input-defense re-application (R-B5ENG, 2026-09-15): compiled and run by hand against the real parser to show FAIL before / PASS after; listed in docs/TEST_DESIGN_GUIDELINES.md existing-harness table -- not a gate itself",
+        "role": "dev_tool"
       }
     ]
   },
