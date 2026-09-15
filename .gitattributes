@@ -1,0 +1,3 @@
+# 상류 libhangul-0.2.0 data/hanja 원본을 바이트 그대로 보존합니다(줄끝 변환 금지 — 설치기가 작업트리 파일을 담습니다).
+data/hanja/hanja.txt -text
+data/hanja/mssymbol.txt -text

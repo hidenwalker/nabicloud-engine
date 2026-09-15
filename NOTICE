@@ -55,5 +55,11 @@ NabiCloud libhangul fork — 라이선스/저작권 고지 (NOTICE)
    - 위치: expat-upstream/ (상류 libexpat 서브모듈, R_2_6_4 핀) + 손작성 win32/expat_config.h[Windows/MSVC].
      libhangul.dll 에 정적 컴파일(XML_STATIC). 상세 = README.md 의 expat 항목.
 
+8) libhangul 한자·기호 사전 데이터 — data/hanja/ (상류 원본, 무수정)
+   - hanja.txt: Copyright (c) 2005,2006 Choe Hwanjin · mssymbol.txt: Copyright (c) 2005-2014 Choe Hwanjin
+   - License: BSD 3-clause (전문: 각 파일 머리말, 원문 그대로 보존)
+   - Upstream: https://github.com/libhangul/libhangul 태그 libhangul-0.2.0(41c702f5) data/hanja/
+   - 용도: 나비구름 libhangul 모드가 libhangul 한자 API(hanja_table_load 등)로 읽는다. 줄끝 변환 금지(.gitattributes).
+
 이 NOTICE 는 LGPL-2.1 §2(b)/§6 고지 의무를 충족하기 위한 것이며, 배포물에 포함한다.
-(Expat 은 MIT — 귀속 고지만 의무.)
+(Expat 은 MIT, libhangul 한자 데이터는 BSD 3-clause — 귀속 고지만 의무.)

@@ -3,6 +3,8 @@
 ;   순정 expat 외부 XML 로더를 빌드한다. 기본(V2) 경로는 셸 로더(jaso_xml_load)를 쓰고,
 ;   libhangul 엔진 모드(use_old_engine=1)에서만 아래 hangul_init + list enum 을 통해 libhangul
 ;   자체 로더로 외부 자판을 읽는다(설계 cleanroom/libhangul-mode-runtime-design.md §3·§6).
+; libhangul 엔진 모드 한자(D332-50): 표준 libhangul 입력기(ibus-hangul src/engine.c)처럼 기호 표
+;   (data/hanja/mssymbol.txt)와 한자 표(data/hanja/hanja.txt)를 hanja_table_match_suffix 로 조회한다.
 LIBRARY libhangul
 EXPORTS
     hangul_init
@@ -33,3 +35,4 @@ EXPORTS
     hanja_table_load
     hanja_table_match_exact
     hanja_table_match_prefix
+    hanja_table_match_suffix

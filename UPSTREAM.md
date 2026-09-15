@@ -17,6 +17,17 @@
       (annotated 태그 객체는 `20afc38922e3595ee3ed5b186f2ea05afe663763`, 역참조 `^{}` 커밋이 위 값. 2026-06-19 `git ls-remote` 확인.)
     - 조회: `git ls-remote --tags https://github.com/libhangul/libhangul` → `refs/tags/libhangul-0.2.0^{}`
 
+## 상류 데이터 — data/hanja (2026-09-16, 나비구름 D332-50)
+
+- **내용**: 상류 태그 `libhangul-0.2.0`(커밋 `41c702f5d3581325b646ef6249f1f641b0427ae0`)의 `data/hanja/hanja.txt`
+  (303,521줄, sha256 `dd44dcc856cf542b1022d0f39c2e9b9f8805fdcc5923be80f04849ed97ce0996`)와 `data/hanja/mssymbol.txt`
+  (1,014줄, sha256 `b685a4ebe2716b25eb29c42f6da6493716ecd78b604b44a33420987d21948e99`)를 **바이트 그대로** 둔다.
+  출처 = `https://raw.githubusercontent.com/libhangul/libhangul/libhangul-0.2.0/data/hanja/{hanja,mssymbol}.txt`.
+- **라이선스**: BSD 3-clause(각 파일 머리말). 줄끝은 상류 LF 그대로(`.gitattributes` `-text`).
+- **export**: 표준 libhangul 입력기(ibus-hangul `src/engine.c`)처럼 suffix 조회를 쓰도록 `libhangul.def` 에
+  `hanja_table_match_suffix` 를 더했다(0.2.0 공개 헤더 `hangul/hangul.h` 선언 그대로).
+- 갱신법: 상류 태그의 두 파일을 다시 받아 덮어쓰고 sha256·줄 수를 이 절에 갱신한다.
+
 ## Vendored 의존 — Expat (libexpat) (2026-07-01)
 
 libhangul 의 `ENABLE_EXTERNAL_KEYBOARDS` 외부 XML 자판 로더(`hangul/hangulkeyboard.c`, 순정 expat 경로)를 켜면서
