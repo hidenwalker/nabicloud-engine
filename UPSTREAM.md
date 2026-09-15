@@ -20,12 +20,12 @@
 ## Vendored 의존 — Expat (libexpat) (2026-07-01)
 
 libhangul 의 `ENABLE_EXTERNAL_KEYBOARDS` 외부 XML 자판 로더(`hangul/hangulkeyboard.c`, 순정 expat 경로)를 켜면서
-상류 **libexpat** 를 `expat/` 에 vendored. libhangul 상류(위)와 **별개 프로젝트**다.
+상류 **libexpat** 를 `expat-upstream/` 서브모듈로 둔다. libhangul 상류(위)와 **별개 프로젝트**다.
 - **프로젝트**: libexpat — https://github.com/libexpat/libexpat
-- **릴리스**: `R_2_6_4` · **라이선스**: MIT (`expat/COPYING`·`expat/AUTHORS` — 귀속 고지만 의무)
-- **내용**: `expat/lib/` = 상류 `expat/lib/*` verbatim + 손작성 `expat/lib/expat_config.h`(Windows/MSVC). 상세 `expat/README.md`.
+- **릴리스**: `R_2_6_4` · **라이선스**: MIT (`expat-upstream/COPYING`·`expat-upstream/expat/AUTHORS` — 귀속 고지만 의무)
+- **내용**: 상류 `expat-upstream/expat/lib/*` 무수정 + 손작성 `win32/expat_config.h`(Windows/MSVC). 상세 `README.md` 의 expat 항목.
 - **빌드**: `libhangul.vcxproj` 가 `XML_STATIC` + `ENABLE_EXTERNAL_KEYBOARDS` 로 정적 컴파일(별 DLL 아님).
-- 갱신법: 상류 태그의 `expat/lib/*.{c,h}` + `COPYING`/`AUTHORS` 재복사, `expat/lib/expat_config.h` 유지.
+- 갱신법: `expat-upstream` 서브모듈 핀을 상류 태그로 옮기고 `win32/expat_config.h` 는 유지한다.
 
 ## 재배이스(ingest) 상태 — 트랙 T1 / §42 ② (2026-06-26)
 

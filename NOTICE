@@ -49,11 +49,11 @@ NabiCloud libhangul fork — 라이선스/저작권 고지 (NOTICE)
 
 7) Expat (libexpat) — libhangul 외부 자판 XML 로더(ENABLE_EXTERNAL_KEYBOARDS)용 vendored
    - Copyright (c) 1998-2000 Thai Open Source Software Center Ltd and Clark Cooper;
-     (c) 2001-2024 Expat maintainers
-   - License: MIT (전문: expat/COPYING · 저자: expat/AUTHORS)
+     (c) 2001-2022 Expat maintainers
+   - License: MIT (전문: expat-upstream/COPYING · 저자: expat-upstream/expat/AUTHORS)
    - Upstream: https://github.com/libexpat/libexpat (release R_2_6_4)
    - 위치: expat-upstream/ (상류 libexpat 서브모듈, R_2_6_4 핀) + 손작성 win32/expat_config.h[Windows/MSVC].
-     libhangul.dll 에 정적 컴파일(XML_STATIC). 상세 = expat/README.md.
+     libhangul.dll 에 정적 컴파일(XML_STATIC). 상세 = README.md 의 expat 항목.
 
 이 NOTICE 는 LGPL-2.1 §2(b)/§6 고지 의무를 충족하기 위한 것이며, 배포물에 포함한다.
 (Expat 은 MIT — 귀속 고지만 의무.)
