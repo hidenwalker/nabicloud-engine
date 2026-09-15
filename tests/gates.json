@@ -391,7 +391,7 @@
     {
       "gate_id": "engine.gate_editor_preview_equiv",
       "subsystem": "editor-bridge",
-      "description": "F-3 R4 gate: proves the legacy standard-XML editor preview fallback is gone (3-89/3sun-1990 must be V2 XML) -- composite: builds+runs gate_editor_preview_equiv.c THEN chains a call to build_jaso_editor_verify.bat for V2 preview composition coverage. Multi-step composite, not a single cxx_test.",
+      "description": "F-3 R4 gate: proves the legacy standard-XML editor preview fallback is gone (3-89/3sun-1990 must be V2 XML) -- builds+runs gate_editor_preview_equiv.c only. V2 preview composition is owned by engine.jaso_editor_verify in the same suites; this gate no longer chains build_jaso_editor_verify.bat, because the two gates run in parallel and both built _build/tests/jaso_editor/_jaso_editor_verify.exe at once (sharing violation, exit 9009).",
       "kind": "legacy_bat",
       "suites": [
         "engine",

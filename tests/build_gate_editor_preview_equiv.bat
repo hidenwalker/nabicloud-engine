@@ -6,8 +6,12 @@ if not exist "%~dp0..\..\data\keyboards" ( echo [SKIP] build_gate_editor_preview
 REM ==========================================================================
 REM  F-3 R4 gate: build+run gate_editor_preview_equiv -- prove the legacy
 REM  standard-XML editor preview fallback is gone. The shipped 3-89 / 3sun-1990
-REM  files must be V2 XML, and real preview composition is then covered by
-REM  build_jaso_editor_verify. No engine XML-loader source is compiled here.
+REM  files must be V2 XML. Real V2 preview composition is owned by its own gate
+REM  engine.jaso_editor_verify (build_jaso_editor_verify.bat), declared in the
+REM  same suites. This script must NOT call it: the two gates run in parallel and
+REM  a second call built the same _build\tests\jaso_editor\_jaso_editor_verify.exe
+REM  in the same place at the same time (sharing violation -> exit 9009).
+REM  One output, one producer. No engine XML-loader source is compiled here.
 REM ==========================================================================
 setlocal enabledelayedexpansion
 call "%~dp0find_vcvars.cmd" 64 >nul 2>&1
@@ -30,13 +34,4 @@ gate_editor_preview_equiv.exe "%ROOT%\..\data\keyboards" > "%OUT%\result.txt" 2>
 set "RC=!errorlevel!"
 type "%OUT%\result.txt"
 findstr /C:"GATE_EDITOR_PREVIEW_EQUIV_PASS" "%OUT%\result.txt" >nul 2>&1 || set "RC=1"
-if "!RC!"=="0" (
-  call "%~dp0build_jaso_editor_verify.bat" >nul 2>&1
-  if errorlevel 1 (
-    echo GATE_EDITOR_PREVIEW_EQUIV_FAIL: build_jaso_editor_verify failed
-    set "RC=1"
-  ) else (
-    echo   [ok] build_jaso_editor_verify covers V2 preview composition
-  )
-)
 popd & exit /b !RC!
