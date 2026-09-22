@@ -52,7 +52,7 @@ for %%F in (%CSRC%) do call set OFILES=%%OFILES%% "kernel\%%~nF.obj"
 cl /nologo /W4 /utf-8 /std:c11 /c /I "%CAN%." /I "%PUB%" %CFILES% /Fo:kernel\ 1>_build.log 2>&1
 if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C kernel] & type _build.log & popd & exit /b 1 )
 
-cl /nologo /W4 /utf-8 /std:c++17 /I "%CAN%." /I "%PUB%" /I "%PROMO%" ^
+cl /nologo /W4 /utf-8 /std:c++latest /I "%CAN%." /I "%PUB%" /I "%PROMO%" ^
    "%PROMO%\v2backend.cpp" "%CAN%\jaso_xml_editor.cpp" "%HERE%editor_jsc_dump_v2.cpp" ^
    %OFILES% /Fe:_editor_jsc_dump_v2.exe /Fo:.\ 1>>_build.log 2>&1
 if errorlevel 1 ( echo JSC_DIFF_V2_FAIL [C++ bridge] & type _build.log & popd & exit /b 1 )

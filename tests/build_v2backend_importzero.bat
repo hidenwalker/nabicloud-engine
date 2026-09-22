@@ -42,7 +42,7 @@ if not exist "%SAND_LIB%" (
 
 REM [A] libhangul-FREE link (NO libhangul .obj/.lib in inputs) + run self-test.
 pushd "%PROMO%"
-cl /nologo /W4 /utf-8 /std:c++17 /MT /I . /I "%PUB%" /I "%CAN%" v2backend_test.cpp "%SAND_LIB%" /Fe:_v2importzero.exe 1>>_importzero.log 2>&1
+cl /nologo /W4 /utf-8 /std:c++latest /MT /I . /I "%PUB%" /I "%CAN%" v2backend_test.cpp "%SAND_LIB%" /Fe:_v2importzero.exe 1>>_importzero.log 2>&1
 if errorlevel 1 (
   echo IMPORTZERO_FAIL [consumer link or compile -- libhangul symbol leaked?]
   type _importzero.log

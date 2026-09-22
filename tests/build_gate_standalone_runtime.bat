@@ -46,7 +46,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-cl /nologo /W4 /EHsc /utf-8 /std:c++17 /MT /Fo"%STAND_DIR%\\" "%~dp0standalone_load_probe.cpp" /Fe:"%PROBE%" >> "%LOG%" 2>&1
+cl /nologo /W4 /EHsc /utf-8 /std:c++latest /MT /Fo"%STAND_DIR%\\" "%~dp0standalone_load_probe.cpp" /Fe:"%PROBE%" >> "%LOG%" 2>&1
 if errorlevel 1 (
   echo STANDALONE_RUNTIME_FAIL [probe build]
   type "%LOG%"
@@ -77,7 +77,7 @@ if errorlevel 1 goto copydictfail
 copy /Y "%DICT_SRC%\90-user.txt.template" "%STAND_DIR%\dictionary\" >> "%LOG%" 2>&1
 if errorlevel 1 goto copydictfail
 
-cl /nologo /W4 /EHsc /utf-8 /std:c++17 /MT /wd4996 ^
+cl /nologo /W4 /EHsc /utf-8 /std:c++latest /MT /wd4996 ^
   /I"%ROOT%\windows\tsf" /I"%ROOT%\shared\input\include" /I"%ROOT%\raindrop-runtime\producer\ko\include" /I"%ROOT%\raindrop-runtime\resource\include" /I"%ROOT%\cleanroom\include" /Fo"%STAND_DIR%\\" ^
   "%~dp0standalone_hanja_probe.cpp" ^
   "%ROOT%\windows\tsf\HanjaDict.cpp" ^
