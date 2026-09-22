@@ -161,11 +161,11 @@
         "all"
       ],
       "requirements": [
-        "compiler.cxx17"
+        "compiler.cxx23"
       ],
       "arch": "any",
       "build": {
-        "profile": "portable-cxx17",
+        "profile": "portable-cxx23",
         "sources": [
           "tests/golden_all.c",
           "hangul/hangulctype.c",
@@ -250,11 +250,11 @@
         "all"
       ],
       "requirements": [
-        "compiler.cxx17"
+        "compiler.cxx23"
       ],
       "arch": "any",
       "build": {
-        "profile": "portable-cxx17",
+        "profile": "portable-cxx23",
         "sources": [
           "tests/gate_shell_keymap_equiv.c",
           "hangul/hangulctype.c",
@@ -432,7 +432,7 @@
         "all"
       ],
       "requirements": [
-        "compiler.cxx17",
+        "compiler.cxx23",
         "tool.msbuild",
         "tool.dumpbin"
       ],
@@ -459,7 +459,7 @@
             "id": "build_consumer",
             "kind": "cxx_build",
             "build": {
-              "profile": "portable-cxx17",
+              "profile": "portable-cxx23",
               "sources": ["cleanroom/impl/promote-shinp2/v2backend_test.cpp"],
               "includes": ["cleanroom/impl/promote-shinp2", "cleanroom/include", "cleanroom/impl/clean/canonical"],
               "extra_flags": ["/W4", "/MT"]
@@ -505,7 +505,7 @@
         "all"
       ],
       "requirements": [
-        "compiler.cxx17",
+        "compiler.cxx23",
         "tool.msbuild",
         "tool.dumpbin"
       ],
@@ -544,7 +544,7 @@
             "id": "build_load_probe",
             "kind": "cxx_build",
             "build": {
-              "profile": "portable-cxx17",
+              "profile": "portable-cxx23",
               "sources": ["shared/engine/tests/standalone_load_probe.cpp"],
               "extra_flags": ["/W4", "/MT"]
             },
@@ -567,7 +567,7 @@
             "id": "build_hanja_probe",
             "kind": "cxx_build",
             "build": {
-              "profile": "portable-cxx17",
+              "profile": "portable-cxx23",
               "sources": [
                 "shared/engine/tests/standalone_hanja_probe.cpp",
                 "windows/tsf/HanjaDict.cpp",
