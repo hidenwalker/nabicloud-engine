@@ -13,9 +13,11 @@
 | wrapper | 엔진 루트 기준 출력 | 소비자 |
 |---|---|---|
 | `build_gate_shell_keymap_equiv.bat` | `_build/tests/keymap_equiv/` (sources.rsp·obj·exe·build.log·result.txt) | 같은 wrapper의 PASS 토큰 검사 |
-| `build_gate_editor_preview_equiv.bat` | `_build/tests/preview_equiv/` (obj·exe·build.log·result.txt) | 같은 wrapper의 PASS 토큰 검사 후 `build_jaso_editor_verify.bat` 실행 |
+| `build_gate_editor_preview_equiv.bat` | `_build/tests/preview_equiv/` (obj·exe·build.log·result.txt) | 같은 wrapper의 PASS 토큰 검사. V2 preview 구성은 별도 `engine.jaso_editor_verify` 가 검증 |
 | `build_editor_jsc_diff_v2.bat` | `_build/tests/editor_jsc/` (kernel/·obj·exe·log·xml/) | `jsc-diff-v2.js [덤프 디렉터리]`; 인자 생략 시 같은 xml/ 경로 |
 | `gate_pristine_imports.bat [ENFORCE]` | `_build/tests/pristine_imports/imports.txt` | `gate_pristine_imports.ps1`의 기존 감사/강제 모드 |
+
+POSIX 공용 workflow는 `gates.json`의 native product stage에서 editor C kernel을 archive로 만들고 C++ bridge를 link/run 한다. `engine.jaso_editor_verify`는 기본 실행 뒤 `--p2-first`를 실행하며, `engine.editor_jsc_diff_v2`는 C 덤프 성공 뒤 같은 격리 작업공간에서 Node byte 대조를 실행한다. Windows batch wrapper는 기존 직접 실행 경로로 남는다.
 
 MSBuild의 `Debug/`, `Release/`, `Win32/`, `x64/`, `libhangul/`는 제품 빌드 출력 계약을 유지한다.
 이 디렉터리와 `_build/`, Python `__pycache__/`의 무시 규칙은 엔진 `.gitignore`가

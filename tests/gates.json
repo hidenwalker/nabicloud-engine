@@ -97,18 +97,6 @@
         "owner": "tests/dump_builtin_keymaps.bat"
       },
       {
-        "path": "tests/editor_jsc_dump_v2.cpp",
-        "reason": "built by tests/build_editor_jsc_diff_v2.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
-        "role": "legacy_pending",
-        "owner": "tests/build_editor_jsc_diff_v2.bat"
-      },
-      {
-        "path": "tests/gate_editor_preview_equiv.c",
-        "reason": "built by tests/build_gate_editor_preview_equiv.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
-        "role": "legacy_pending",
-        "owner": "tests/build_gate_editor_preview_equiv.bat"
-      },
-      {
         "path": "tests/standalone_hanja_probe.cpp",
         "reason": "built by tests/build_gate_standalone_runtime.bat, registered as legacy_bat (composite/multi-stage recipe, not a standalone cxx_test source)",
         "role": "legacy_pending",
@@ -323,35 +311,214 @@
     {
       "gate_id": "engine.jaso_editor_verify",
       "subsystem": "editor-bridge",
-      "description": "V2 keyboard-editor bridge cross-verify gate (thin wrapper) -- invokes cleanroom/impl/clean/canonical/build_jaso_editor_verify.cmd internally (editor bridge sources live in cleanroom/, not shared/engine). Registered against the shared/engine wrapper .bat itself (what run_all_gates.bat actually calls), not the cleanroom .cmd directly.",
-      "kind": "legacy_bat",
+      "description": "V2 keyboard-editor bridge cross-verify: C kernel archive, C++ editor link, then default and --p2-first runs. The Windows batch wrapper remains available to run_all_gates.bat.",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
+      "requirements": [
+        "compiler.cxx23",
+        "compiler.c11",
+        "tool.lib"
+      ],
       "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_jaso_editor_verify.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "cleanroom_cmd_native_port_tbd"
+      "product": {
+        "preconditions": [
+          {
+            "path_exists": "cleanroom"
+          },
+          {
+            "path_exists": "shared/data/keyboards"
+          }
+        ],
+        "stages": [
+          {
+            "id": "archive_editor_kernel",
+            "kind": "archive",
+            "output_artifact_id": "editor_kernel",
+            "build": {
+              "profile": "portable-c11",
+              "sources": [
+                "cleanroom/impl/clean/canonical/engine-jaso-core.c",
+                "cleanroom/impl/clean/canonical/jaso_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_noshift.c",
+                "cleanroom/impl/clean/canonical/jaso_chord.c",
+                "cleanroom/impl/clean/canonical/vm_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_xml_loader.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_p2.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinp.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2012.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2015.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinm.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3gs.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol390.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol_final.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_galmadeuli.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_dubeol_std.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3sun2014.c",
+                "cleanroom/impl/clean/canonical/jamo_compat.c"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include"
+              ]
+            }
+          },
+          {
+            "id": "build_jaso_editor_verify",
+            "kind": "cxx_build",
+            "output_artifact_id": "jaso_editor_verify",
+            "build": {
+              "profile": "portable-cxx23",
+              "sources": [
+                "cleanroom/impl/promote-shinp2/v2backend.cpp",
+                "cleanroom/impl/clean/canonical/jaso_xml_editor.cpp",
+                "cleanroom/impl/clean/canonical/jaso_editor_verify.cpp"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include",
+                "cleanroom/impl/promote-shinp2"
+              ]
+            },
+            "link_inputs": [
+              {
+                "artifact": "editor_kernel"
+              }
+            ]
+          },
+          {
+            "id": "run_jaso_editor_verify",
+            "kind": "run",
+            "executable": {
+              "artifact": "jaso_editor_verify"
+            },
+            "arguments": [
+              {
+                "repo_path": "shared/data/keyboards"
+              }
+            ],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "EXIT_ONLY"
+            }
+          },
+          {
+            "id": "run_jaso_editor_p2_first",
+            "kind": "run",
+            "executable": {
+              "artifact": "jaso_editor_verify"
+            },
+            "arguments": [
+              {
+                "repo_path": "shared/data/keyboards"
+              },
+              "--p2-first"
+            ],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "EXIT_ONLY"
+            }
+          }
+        ]
       }
     },
     {
       "gate_id": "engine.vm_editor_verify",
       "subsystem": "editor-bridge",
-      "description": "VM (register-machine / 4z) keyboard-editor bridge cross-verify gate (thin wrapper) -- invokes cleanroom/impl/clean/canonical/build_vm_editor_verify.cmd internally.",
-      "kind": "legacy_bat",
+      "description": "VM (register-machine / 4z) keyboard-editor bridge cross-verify: C kernel archive, C++ VM editor link, then executable run. The Windows batch wrapper remains available to run_all_gates.bat.",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
+      "requirements": [
+        "compiler.cxx23",
+        "compiler.c11",
+        "tool.lib"
+      ],
       "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_vm_editor_verify.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "cleanroom_cmd_native_port_tbd"
+      "product": {
+        "preconditions": [
+          {
+            "path_exists": "cleanroom"
+          }
+        ],
+        "stages": [
+          {
+            "id": "archive_editor_kernel",
+            "kind": "archive",
+            "output_artifact_id": "editor_kernel",
+            "build": {
+              "profile": "portable-c11",
+              "sources": [
+                "cleanroom/impl/clean/canonical/engine-jaso-core.c",
+                "cleanroom/impl/clean/canonical/jaso_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_noshift.c",
+                "cleanroom/impl/clean/canonical/jaso_chord.c",
+                "cleanroom/impl/clean/canonical/vm_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_xml_loader.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_p2.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinp.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2012.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2015.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinm.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3gs.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol390.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol_final.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_galmadeuli.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_dubeol_std.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3sun2014.c",
+                "cleanroom/impl/clean/canonical/jamo_compat.c",
+                "cleanroom/impl/clean/canonical/vm_layout_4z.c",
+                "cleanroom/impl/clean/canonical/vm_xml.c"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include"
+              ]
+            }
+          },
+          {
+            "id": "build_vm_editor_verify",
+            "kind": "cxx_build",
+            "output_artifact_id": "vm_editor_verify",
+            "build": {
+              "profile": "portable-cxx23",
+              "sources": [
+                "cleanroom/impl/promote-shinp2/v2backend.cpp",
+                "cleanroom/impl/clean/canonical/vm_editor.cpp",
+                "cleanroom/impl/clean/canonical/vm_editor_verify.cpp"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include",
+                "cleanroom/impl/promote-shinp2"
+              ]
+            },
+            "link_inputs": [
+              {
+                "artifact": "editor_kernel"
+              }
+            ]
+          },
+          {
+            "id": "run_vm_editor_verify",
+            "kind": "run",
+            "executable": {
+              "artifact": "vm_editor_verify"
+            },
+            "arguments": [],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "EXIT_ONLY"
+            }
+          }
+        ]
       }
     },
     {
@@ -369,7 +536,8 @@
         "bat_path": "tests/build_abbrev_chord_v2_verify.bat",
         "owner": "shared/engine/tests/run_all_gates.bat",
         "retire_stage": "windows_tsf_shard_native_port_tbd"
-      }
+      },
+      "platform": "windows"
     },
     {
       "gate_id": "engine.dubeol_abbrev_verify",
@@ -386,40 +554,186 @@
         "bat_path": "tests/build_dubeol_abbrev_verify.bat",
         "owner": "shared/engine/tests/run_all_gates.bat",
         "retire_stage": "windows_tsf_shard_native_port_tbd"
-      }
+      },
+      "platform": "windows"
     },
     {
       "gate_id": "engine.gate_editor_preview_equiv",
       "subsystem": "editor-bridge",
       "description": "F-3 R4 gate: proves the legacy standard-XML editor preview fallback is gone (3-89/3sun-1990 must be V2 XML) -- builds+runs gate_editor_preview_equiv.c only. V2 preview composition is owned by engine.jaso_editor_verify in the same suites; this gate no longer chains build_jaso_editor_verify.bat, because the two gates run in parallel and both built _build/tests/jaso_editor/_jaso_editor_verify.exe at once (sharing violation, exit 9009).",
-      "kind": "legacy_bat",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
+      "requirements": [
+        "compiler.cxx23",
+        "compiler.c11",
+        "tool.lib"
+      ],
       "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_gate_editor_preview_equiv.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "composite_multistage_native_port_tbd"
+      "product": {
+        "preconditions": [
+          {
+            "path_exists": "shared/data/keyboards"
+          }
+        ],
+        "stages": [
+          {
+            "id": "build_preview_equiv",
+            "kind": "cxx_build",
+            "output_artifact_id": "preview_equiv",
+            "build": {
+              "profile": "portable-c11",
+              "sources": [
+                "shared/engine/tests/gate_editor_preview_equiv.c"
+              ],
+              "includes": []
+            }
+          },
+          {
+            "id": "run_preview_equiv",
+            "kind": "run",
+            "executable": {
+              "artifact": "preview_equiv"
+            },
+            "arguments": [
+              {
+                "repo_path": "shared/data/keyboards"
+              }
+            ],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "LEGACY_TOKEN",
+              "token_text": "GATE_EDITOR_PREVIEW_EQUIV_PASS"
+            }
+          }
+        ]
       }
     },
     {
       "gate_id": "engine.editor_jsc_diff_v2",
       "subsystem": "editor-bridge",
       "description": "JS<->C serializer differential gate (V2 edition): 2-stage native build (C kernel objects + C++ editor bridge exe) dumps each builtin keyboard's canonical serialization, then node jsc-diff-v2.js checks the JS core reproduces those bytes exactly. Hybrid native+node, not expressible as a single cxx_test.",
-      "kind": "legacy_bat",
+      "kind": "product_artifact_check",
       "suites": [
         "engine",
         "all"
       ],
-      "requirements": [],
+      "requirements": [
+        "compiler.cxx23",
+        "compiler.c11",
+        "tool.lib"
+      ],
       "arch": "any",
-      "legacy": {
-        "bat_path": "tests/build_editor_jsc_diff_v2.bat",
-        "owner": "shared/engine/tests/run_all_gates.bat",
-        "retire_stage": "composite_multistage_native_port_tbd"
+      "product": {
+        "preconditions": [
+          {
+            "path_exists": "cleanroom"
+          },
+          {
+            "path_exists": "windows/settings/tests/editor-core.js"
+          },
+          {
+            "path_exists": "shared/data/keyboards"
+          }
+        ],
+        "stages": [
+          {
+            "id": "archive_editor_kernel",
+            "kind": "archive",
+            "output_artifact_id": "editor_kernel",
+            "build": {
+              "profile": "portable-c11",
+              "sources": [
+                "cleanroom/impl/clean/canonical/engine-jaso-core.c",
+                "cleanroom/impl/clean/canonical/jaso_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_noshift.c",
+                "cleanroom/impl/clean/canonical/jaso_chord.c",
+                "cleanroom/impl/clean/canonical/vm_strat.c",
+                "cleanroom/impl/clean/canonical/jaso_xml_loader.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_p2.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinp.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2012.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shin2015.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_shinm.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3gs.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol390.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_sebeol_final.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_galmadeuli.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_dubeol_std.c",
+                "cleanroom/impl/clean/canonical/jaso_layout_3sun2014.c",
+                "cleanroom/impl/clean/canonical/jamo_compat.c"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include"
+              ]
+            }
+          },
+          {
+            "id": "build_editor_jsc_dump_v2",
+            "kind": "cxx_build",
+            "output_artifact_id": "editor_jsc_dump_v2",
+            "build": {
+              "profile": "portable-cxx23",
+              "sources": [
+                "cleanroom/impl/promote-shinp2/v2backend.cpp",
+                "cleanroom/impl/clean/canonical/jaso_xml_editor.cpp",
+                "shared/engine/tests/editor_jsc_dump_v2.cpp"
+              ],
+              "includes": [
+                "cleanroom/impl/clean/canonical",
+                "cleanroom/include",
+                "cleanroom/impl/promote-shinp2"
+              ]
+            },
+            "link_inputs": [
+              {
+                "artifact": "editor_kernel"
+              }
+            ]
+          },
+          {
+            "id": "run_editor_jsc_dump_v2",
+            "kind": "run",
+            "executable": {
+              "artifact": "editor_jsc_dump_v2"
+            },
+            "arguments": [
+              {
+                "workspace": "."
+              },
+              {
+                "repo_path": "shared/data/keyboards"
+              }
+            ],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "EXIT_ONLY"
+            }
+          },
+          {
+            "id": "compare_editor_jsc_v2",
+            "kind": "node_run",
+            "script": {
+              "repo_path": "shared/engine/tests/jsc-diff-v2.js"
+            },
+            "arguments": [
+              {
+                "workspace": "."
+              }
+            ],
+            "timeout_class": "medium",
+            "expected": {
+              "exit_code": 0,
+              "token_kind": "LEGACY_TOKEN",
+              "token_text": "JSC_DIFF_V2_PASS"
+            }
+          }
+        ]
       }
     },
     {
