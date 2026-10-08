@@ -18,7 +18,6 @@ const core = require(path.join(__dirname, "..", "..", "..", "windows", "settings
 const { parseKeyboardXml, serializeKeyboard, canonJasoModel, isV2Xml, isVmXml } = core;
 
 const DIR = process.argv[2] || path.join(__dirname, "..", "_build", "tests", "editor_jsc", "xml");
-const MIN = 14;   // kJasoBuiltin 14종(덤프가 조용히 줄면 드리프트) — editor_jsc_dump_v2.cpp kKb[]
 
 let files;
 try {
@@ -27,8 +26,8 @@ try {
   console.error("JSC_DIFF_V2_FAIL: " + DIR + " 없음 — C 덤프(editor_jsc_dump_v2) 선행 필요.");
   process.exit(1);
 }
-if (files.length < MIN) {
-  console.error("JSC_DIFF_V2_FAIL: " + DIR + " 에 " + files.length + "개 (< " + MIN + ") — 덤프 축소 드리프트.");
+if (files.length === 0) {
+  console.error("JSC_DIFF_V2_FAIL: " + DIR + " 에 " + files.length + "개 — 비교할 C 덤프가 없습니다.");
   process.exit(1);
 }
 

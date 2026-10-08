@@ -63,6 +63,8 @@ static const struct { const char* id; const char* name; } kKb[] = {
     { "3sun-2014",    "3sun-2014" },
 };
 #define NKB (sizeof(kKb) / sizeof(kKb[0]))
+/* Fixture authoring floor; checked when this source is compiled, before producing any XML. */
+static_assert(NKB >= 14, "editor JSC dump fixture must cover at least 14 keyboards");
 
 /* Mirror of SettingsWebView.cpp editorLoad escaping: name = & < > ;
  * attr(id) additionally " . Never emits &apos;/&quot; in char data, so the JS

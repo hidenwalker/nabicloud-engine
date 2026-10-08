@@ -8,13 +8,10 @@
  * 소비자·동기화 (정직게이트 — 조용한 어긋남 차단):
  *   - build_cleanroom_selftests.bat: 컴파일 대상·srcs·실행 순서의 *실행 정본*은 여전히 .bat
  *     (행마다 srcs 목록이 달라 X-macro 3필드로 표현 불가·cmd 파싱 취약 → .bat 직소비 안 함).
- *   - runtime_checklist_catalog.py `check`: 이 로스터 ↔ .bat manifest **양방향 대조**(불일치=FAIL)
- *     + kbid 가 id-registry 에 실재하는지 검증. build_drift_check(run_all_gates) 편입.
  *   - runtime_checklist_catalog.py `verify`: kbid 열이 FILE_TO_ID(자판귀속 드리프트 게이트)의 원천
  *     (과거 .py 수기 dict 14종을 이 파일로 수렴 — 2026-07-02).
- *   - census(디스크 selftest*.c ↔ .bat) 와 합쳐 디스크·.bat·로스터 삼각 폐쇄.
  *
- * ★새 selftest 추가 = .bat `call :build` 행 + 여기 SELFTEST 행 동시 (한쪽 누락 → check/census FAIL).
+ * ★새 selftest 추가 = .bat `call :build` 행 + 여기 SELFTEST 행 동시 (파일·manifest 누락 → census FAIL).
  *   .py 는 이 파일을 regex 로 파싱하므로 행 형식(한 줄 = SELFTEST(stem, "kbid", "desc")) 유지.
  */
 #ifndef SELFTEST

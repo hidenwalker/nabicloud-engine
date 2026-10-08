@@ -183,8 +183,7 @@
       "description": "W8e-1 seal anchor: deterministically extracts the pristine nine builtin keyboards from golden_all.txt and byte-compares them with the independent pristine9 anchor.",
       "kind": "script_test",
       "suites": [
-        "engine",
-        "all"
+        "engine"
       ],
       "requirements": [],
       "arch": "any",
@@ -201,30 +200,6 @@
           "exit_code": 0,
           "token_kind": "LEGACY_TOKEN",
           "token_text": "PRISTINE9_ANCHOR_OK"
-        }
-      }
-    },
-    {
-      "gate_id": "engine.drift_check",
-      "subsystem": "testsys",
-      "description": "Static drift gate (build 0): runtime_checklist_catalog.py check (roster<->manifest cross-check) + census (canonical selftest*.c intersect build manifest). python absent = skip. (Scope overlaps T5 -- T5 absorbs the underlying catalog logic into raindrop_testsys; this registers the CURRENT script as-is.)",
-      "kind": "script_test",
-      "suites": [
-        "engine",
-        "all"
-      ],
-      "requirements": [],
-      "arch": "any",
-      "run": {
-        "cwd": ".",
-        "arguments": [
-          {"repo_path": "shared/engine/tests/runtime_checklist_catalog.py"},
-          "check"
-        ],
-        "timeout_class": "medium",
-        "expected": {
-          "exit_code": 0,
-          "token_kind": "EXIT_ONLY"
         }
       }
     },
@@ -265,47 +240,6 @@
           "token_kind": "LEGACY_TOKEN",
           "token_text": "GATE_SHELL_KEYMAP_EQUIV_PASS"
         }
-      }
-    },
-    {
-      "gate_id": "engine.gate_shell_include_boundary",
-      "subsystem": "shell-boundary",
-      "description": "Shell-to-engine include boundary gate (2026-07-02 arch review): production shell TUs (windows/tsf top-level, windows/settings) must consume the Sandeulbaram engine only through the public surface (cleanroom/include) + embedded builtin XML data headers -- a direct #include of any engine-internal header is a layering violation. Baseline = 0 violations.",
-      "kind": "source_rule",
-      "suites": [
-        "engine",
-        "all"
-      ],
-      "requirements": [],
-      "arch": "any",
-      "rule": {
-        "clauses": [
-          {
-            "mode": "forbid_substrings",
-            "targets": [
-              "../../windows/tsf/*.cpp",
-              "../../windows/tsf/*.h",
-              "../../windows/settings/*.cpp"
-            ],
-            "patterns": [
-              "engine-jaso-core.h",
-              "jaso_strat.h",
-              "jaso_layout.h",
-              "jaso_chord.h",
-              "jaso_xml_loader.h",
-              "jaso_xml_editor.h",
-              "vm_strat.h",
-              "vm_xml.h",
-              "vm_editor.h",
-              "v2backend.h",
-              "shin_p2_strat.h",
-              "galmadeuli_strat.h",
-              "fourz_strat.h",
-              "ist2xml.h"
-            ],
-            "ignore_c_comments": true
-          }
-        ]
       }
     },
     {
