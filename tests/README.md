@@ -36,27 +36,26 @@ tests\build_and_verify.bat   REM 단일 게이트(3gs 기본 골든)
 게이트를 **건드리지 않는다**(순수 additive, run_all_gates 무관). 데이터는 전부 라이브 소스 도출(드리프트 없음).
 
 ★**T5(59번, 2026-07-23) 흡수**: 실제 구현은 `raindrop_testsys/jaso_catalog.py`(공용 테스트 패키지)로
-이동했다 — **정본은 거기, 아래 `runtime_checklist_catalog.py` 는 기존 호출부(`build_drift_check.bat`·
-gates.json `engine.drift_check`) 하위호환용 위임 shim**(출력/exit code byte-동치 검증됨). 새 사용은
-아래 두 방식 어느 쪽이든 동일:
+이동했다 — **정본은 거기, 아래 `runtime_checklist_catalog.py` 는 기존 진단 호출부 하위호환용 위임 shim**
+(흡수 당시 출력/exit code byte-동치 검증됨). 새 사용은 아래 두 방식 어느 쪽이든 동일:
 
 ```
 python -m raindrop_testsys select <변경파일..> --root <repo>   REM 정본 진입점(단일 driver 와 동일 --root 관례)
 python runtime_checklist_catalog.py select <변경파일..>         REM 이 디렉터리에서 그대로(shim, 동일 출력)
 ```
 
-커맨드 7종(둘 다 동일하게 지원): `select`(변경→영향 자판·기제·라운드·게이트앵커, 없으면 git diff) ·
+커맨드 6종(둘 다 동일하게 지원): `select`(변경→영향 자판·기제·라운드·게이트앵커, 없으면 git diff) ·
 `catalog`(레이아웃×기제 매트릭스+id-registry UNION 덤프) · `census`(selftest∩빌드manifest 감사) ·
-`check`(드리프트 게이트: known-dropped sync+기제필드 분류) · `collect`(2단계: 계측 selftest -DEMIT_JSON
+`collect`(2단계: 계측 selftest -DEMIT_JSON
 빌드+실행→방출 파싱→한글 디코드) · `verify`(2단계 검증패스: RUNTIME_TEST_CHECKLIST 수기 행 ↔ 엔진 방출 대조) ·
 `pairs`(대칭짝 자동조립: backspace짝·fire/non-fire짝 검출, §1).
 
 ★새 자판(외부 XML·빌트인 레이아웃·NSI 본체 승격)은 **도구 무수정 자동 반영**(glob+정규식). 유일한 수기
-터치포인트 = 신규 *기제*(jaso_layout 새 필드) — `check` 의 M3b 드리프트가 미분류를 fail 로 강제(조용한 누락 방지).
+터치포인트 = 신규 *기제*(jaso_layout 새 필드).
 
-★**`build_drift_check.bat` = run_all_gates 편입(build 0)**: 매 게이트 실행 시 `check`(known-dropped sync +
-기제필드 분류) + `census`(selftest∩manifest) 를 자동 실행 → 레지스트리/기제 드리프트를 시끄러운 게이트 실패로
-승격(M3). python 부재 시 skip(exit 0). collect/verify(cl 빌드 필요)는 게이트 미편입 — 수동/후속.
+★**게이트 미편입(2026-10-08)**: 예전 `check` 명령·`engine.drift_check` 게이트·`build_drift_check.bat` 은
+「검사의 검사를 매번 돌리지 않는다」(부모 저장소 DECISIONS D335-20)에 따라 제거했다. 남은 6명령은 명시 진단
+도구이며 게이트로 자동 실행하지 않는다.
 
 **2단계 instrument-and-run(착수)**: `selftest_emit.h`(공유 방출 훅 — `-DEMIT_JSON` off=완전 no-op·게이트 무영향)를
 selftest 에 얹으면 각 케이스가 `{id,input(실제 키),expected[],got[],altitude}` JSON 을 방출한다. `collect` 가 계측
